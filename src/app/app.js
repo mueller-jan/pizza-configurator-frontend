@@ -1,14 +1,13 @@
-var app = angular.module('app', ['ui.router', 'checklist-model'])
+var app = angular.module('app', ['app.home', 'app.configurator', 'ui.bootstrap', 'ui.router'])
 
     .config(function appConfig($stateProvider, $urlRouterProvider) {
-        $urlRouterProvider.otherwise('/');
+        $urlRouterProvider.otherwise('/home');
     })
 
     .controller('AppCtrl', function AppCtrl($scope) {
-        $scope.selectedIngredients = [];
-        $scope.ingredients = [
-            {name: 'Pineapple', imagePath: './assets/pineapple.png'},
-            {name: 'Swiss Cheese', imagePath: './assets/swisscheese.png'}
-        ];
+        $scope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
+            if (angular.isDefined(toState.data.pageTitle)) {
+                $scope.pageTitle = toState.data.pageTitle + ' | pizza-configurator';
+            }
+        });
     });
-

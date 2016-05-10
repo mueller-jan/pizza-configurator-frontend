@@ -1,0 +1,21 @@
+<div class="row">
+    <div class="col-md-4">
+        <h1>Ingredients</h1>
+        <div ng-repeat="ingredient in ingredients">
+            <label>
+                <input type="checkbox" checklist-model="selectedIngredients" checklist-value="ingredient">
+                {{ingredient.name}}
+            </label>
+            <br>
+        </div>
+    </div>
+
+
+    <div class="col-md-8">
+        <h1>Pizza</h1>
+        <div id="pizza">
+            <img src="assets/pizza-base.png"/>
+            <img ng-repeat="ingredient in selectedIngredients" ng-src="{{ingredient.imagePath}}"/>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html ng-app="app" ng-controller="AppCtrl">
+<head>
+    <meta charset="UTF-8">
+
+    <!--custom styles-->
+    <link href="css/style.css" rel="stylesheet">
+
+    <!-- Bootstrap CDN-->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+
+    <title>Title</title>
+</head>
+<body>
+
+<label ng-repeat="ingredient in ingredients">
+    <input type="checkbox" checklist-model="selectedIngredients" checklist-value="ingredient"> {{ingredient.name}}
+</label>
+
+<div id="pizza">
+    <img src="assets/pizza-base.png"/>
+    <img ng-repeat="ingredient in selectedIngredients" ng-src="{{ingredient.imagePath}}"/>
+</div>
+
+</body>
+
+<!--Angular-->
+<script src=../vendor/angular/angular.js></script>
+<script src="../vendor/angular-animate/angular-animate.js"></script>
+
+<!--UI Router-->
+<script src="../vendor/angular-ui-router/release/angular-ui-router.js"></script>
+
+<!--Checklist Model-->
+<script src="../vendor/checklist-model/checklist-model.js"></script>
+
+<!-- automatically injected by gulp task "index">
+<!-- inject:js -->
+<script src="common/services/crud.js"></script>
+<script src="common/services/auth.js"></script>
+<script src="app/app.js"></script>
+<!-- endinject -->
+
+</html>
+

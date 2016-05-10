@@ -1,0 +1,10 @@
+
+#pizza {
+    position: relative; left: 0; top: 0;
+}
+
+#pizza img{
+    width:340px; /* you can use % */
+    height: auto;
+    position: absolute; top: 0; left: 0;
+}

@@ -20,8 +20,15 @@ angular.module('app.register', [
     .controller('RegisterCtrl', function RegisterController($scope, crudService) {
         $scope.register = function (user) {
             crudService.createUser(user).then(function (user) {
+
+                alert('Registration successful');
+                $scope.user.email = '';
+                $scope.user.firstName = '';
+                $scope.user.lastName = '';
+                $scope.user.password = '';
+
             }, function () {
-                // $rootScope.$broadcast(AUTH_EVENTS.loginFailed);
+                alert('Registration failed');
             });
         };
     });

@@ -16,6 +16,5 @@ angular.module('app.home', [
         });
     })
 
-
     .controller('HomeCtrl', function HomeController($scope) {
     });

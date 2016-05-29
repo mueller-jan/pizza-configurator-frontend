@@ -1,9 +1,6 @@
 <div class="row">
     <div class="col-md-3">
-
         <h3>Ingredients</h3>
-
-
         <button type="button" class="btn btn-default btn-sm" ng-click="randomize()">Randomize</button>
         <div ng-repeat="ingredient in ingredients">
             <label>
@@ -13,13 +10,10 @@
             <br>
         </div>
     </div>
-
     <div class="col-md-9">
         <div id="pizza">
             <img src="assets/pizza-base.png"/>
             <img ng-repeat="ingredient in selectedIngredients" ng-src="{{ingredient.imagePath}}"/>
         </div>
     </div>
-
-
 </div>

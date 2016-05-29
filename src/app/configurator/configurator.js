@@ -14,7 +14,6 @@ angular.module('app.configurator',
         });
     })
 
-
     .controller('configuratorCtrl', function ConfiguratorController($scope) {
         $scope.selectedIngredients = [];
 

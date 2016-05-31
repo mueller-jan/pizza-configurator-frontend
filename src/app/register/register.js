@@ -17,16 +17,17 @@ angular.module('app.register', [
         });
     })
 
-    .controller('RegisterCtrl', function RegisterController($scope, crudService) {
+    .controller('RegisterCtrl', function RegisterController($scope, $state, CrudService) {
         $scope.register = function (user) {
-            crudService.createUser(user).then(function (user) {
-
+            CrudService.createUser(user).then(function (res) {
                 alert('Registration successful');
-                $scope.user.email = '';
-                $scope.user.firstName = '';
-                $scope.user.lastName = '';
-                $scope.user.password = '';
-
+                var userId = res.data;
+                CrudService.createAddress(userId, $scope.address).then(function (res) {
+                    alert('Added address to User');
+                    $state.go('home')
+                }, function () {
+                    alert('Adding address to user failed');
+                })
             }, function () {
                 alert('Registration failed');
             });

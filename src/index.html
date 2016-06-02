@@ -44,13 +44,17 @@
                         Register
                     </a>
                 </li>
+                <li ui-sref-active="active">
+                    <a href ui-sref="login">
+                        Login
+                    </a>
+                </li>
             </ul>
         </div>
     </div>
 </div>
 
 <div class="container" ui-view="main"></div>
-
 
 </body>
 
@@ -72,6 +76,7 @@
 <script src="common/services/crud.js"></script>
 <script src="common/services/auth.js"></script>
 <script src="app/register/register.js"></script>
+<script src="app/login/login.js"></script>
 <script src="app/home/home.js"></script>
 <script src="app/configurator/configurator.js"></script>
 <script src="app/config.js"></script>

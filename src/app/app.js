@@ -1,20 +1,61 @@
 var app = angular.module('app', [
-    'app.home',
-    'app.configurator',
-    'app.register',
-    'app.config',
-    'services.crud',
-    'ui.bootstrap',
-    'ui.router'])
+        'app.home',
+        'app.configurator',
+        'app.register',
+        'app.login',
+        'app.config',
+        'services.auth',
+        'services.crud',
+        'ui.bootstrap',
+        'ui.router'])
 
     .config(function appConfig($stateProvider, $urlRouterProvider) {
         $urlRouterProvider.otherwise('/home');
     })
 
-    .controller('AppCtrl', function AppCtrl($scope) {
+    .controller('AppCtrl', function AppCtrl($scope, $rootScope, $state, AuthService, AUTH_EVENTS, SUCCESS_EVENTS) {
+        $rootScope.$on("error", function (e, error) {
+            console.log(error.data.message);
+        });
+
+        $rootScope.$on(AUTH_EVENTS.loginSuccess, function () {
+            console.log('login success')
+        });
+
+        $scope.currentUser = null;
+
+        AuthService.authenticate().then(function (data) {
+            $scope.currentUser = data
+        });
+
+        $scope.isAuthorized = AuthService.isAuthorized;
+
+        $scope.setCurrentUser = function (user) {
+            $scope.currentUser = user;
+        };
+
+        $scope.logout = function () {
+            AuthService.logout();
+            $scope.currentUser = null;
+            $state.go('app.home');
+        };
+
         $scope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
             if (angular.isDefined(toState.data.pageTitle)) {
                 $scope.pageTitle = toState.data.pageTitle + ' | pizza-configurator';
+            }
+        });
+
+        $scope.$on("$stateChangeStart", function (event, toState, toParams, fromState, fromParams) {
+            console.log(toState.name);
+            var protectedStates = ["configurator"];
+            if (protectedStates.indexOf(toState.name) > -1) {
+                if (!AuthService.isAuthenticated() || !AuthService.isAuthorized()) {
+                    $state.transitionTo("login");
+                    event.preventDefault();
+                }
+            } else {
+
             }
         });
     });

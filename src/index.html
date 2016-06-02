@@ -50,6 +50,11 @@
                     </a>
                 </li>
                 <li ng-show="currentUser" ui-sref-active="active">
+                    <a href ui-sref="profile">
+                        Profile
+                    </a>
+                </li>
+                <li ng-show="currentUser" ui-sref-active="active">
                     <a href  ng-click="logout()">
                         Logout {{currentUser.email}}
                     </a>
@@ -81,6 +86,7 @@
 <script src="common/services/crud.js"></script>
 <script src="common/services/auth.js"></script>
 <script src="app/register/register.js"></script>
+<script src="app/profile/profile.js"></script>
 <script src="app/login/login.js"></script>
 <script src="app/home/home.js"></script>
 <script src="app/configurator/configurator.js"></script>

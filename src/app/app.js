@@ -3,6 +3,7 @@ var app = angular.module('app', [
         'app.configurator',
         'app.register',
         'app.login',
+        'app.profile',
         'app.config',
         'services.auth',
         'services.crud',
@@ -12,6 +13,10 @@ var app = angular.module('app', [
     .config(function appConfig($stateProvider, $urlRouterProvider) {
         $urlRouterProvider.otherwise('/home');
     })
+
+    .config(['$httpProvider', function ($httpProvider) {
+        $httpProvider.interceptors.push('authInterceptor');
+    }])
 
     .controller('AppCtrl', function AppCtrl($scope, $rootScope, $state, AuthService, AUTH_EVENTS, SUCCESS_EVENTS) {
         $rootScope.$on("error", function (e, error) {

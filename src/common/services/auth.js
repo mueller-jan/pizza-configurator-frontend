@@ -89,11 +89,11 @@ angular.module('services.auth', ['app.config'])
             return {
                 request: function (req) {
                     //injected manually to get around circular dependency problem ($http).
-                    var authService = $injector.get('authService');
+                    var authService = $injector.get('AuthService');
 
                     var token = authService.getToken();
                     if (token) {
-                        req.headers['x-access-token'] = token;
+                        req.headers['Authorization'] = "Bearer " +  token;
                     }
                     return req;
                 }

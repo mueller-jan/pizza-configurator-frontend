@@ -10,7 +10,7 @@ angular.module('services.crud', ['app.config'])
             },
 
             getUserInfo: function () {
-                return $http.post(API_URL + '/users/info', {headers: {'Content-Type': 'application/json'}});
+                return $http.get(API_URL + '/users/info');
             }
         }
     });

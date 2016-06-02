@@ -19,29 +19,25 @@ var app = angular.module('app', [
     }])
 
     .controller('AppCtrl', function AppCtrl($scope, $rootScope, $state, AuthService, AUTH_EVENTS, SUCCESS_EVENTS) {
-        $rootScope.$on("error", function (e, error) {
-            console.log(error.data.message);
-        });
-
         $rootScope.$on(AUTH_EVENTS.loginSuccess, function () {
             console.log('login success')
         });
 
         $scope.currentUser = null;
 
-        // AuthService.authenticate().then(function (data) {
-        //     $scope.currentUser = data
-        // });
+        AuthService.authenticate().then(function (data) {
+            $scope.currentUser = data
+        });
 
         $scope.isAuthorized = AuthService.isAuthorized;
 
         $scope.setCurrentUser = function (user) {
             $scope.currentUser = user;
-            console.log($scope.currentUser)
         };
 
         $scope.logout = function () {
             AuthService.logout();
+            $state.go('home');
             $scope.currentUser = null;
         };
 
@@ -52,10 +48,10 @@ var app = angular.module('app', [
         });
 
         $scope.$on("$stateChangeStart", function (event, toState, toParams, fromState, fromParams) {
-            var protectedStates = ["configurator"];
+            var protectedStates = ['configurator'];
             if (protectedStates.indexOf(toState.name) > -1) {
                 if (!AuthService.isAuthenticated() || !AuthService.isAuthorized()) {
-                    alert('Not authorized, please login first')
+                    alert('Not authorized, please login first');
                     $state.transitionTo("login");
                     event.preventDefault();
                 }

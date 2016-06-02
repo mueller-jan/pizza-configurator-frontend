@@ -7,6 +7,10 @@ angular.module('services.crud', ['app.config'])
 
             createAddress: function (userId, address) {
                 return $http.post(API_URL + '/users/' + userId + '/addresses', address, {headers: {'Content-Type': 'application/json'}});
+            },
+
+            getUserInfo: function () {
+                return $http.post(API_URL + '/users/info', {headers: {'Content-Type': 'application/json'}});
             }
         }
     });

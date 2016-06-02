@@ -22,14 +22,11 @@ angular.module('services.auth', ['app.config'])
             authService.authenticate = function () {
                 var token = tokenService.load();
                 return $http
-                    .post(API_URL + '/token', null, {headers: {'x-access-token': token}})
+                    .get(API_URL + '/users/authenticate')
                     .then(function (res) {
-                        if (res.data.success !== false) {
-                            userService.create(credentials.email, 'user');
-                        }
-                        return res.data.user;
+                        userService.create(res.data, 'user');
+                        return userService;
                     })
-
             };
 
             //weak authentication mechanism for client side
@@ -80,7 +77,7 @@ angular.module('services.auth', ['app.config'])
         }
     })
 
-    .factory ('authInterceptor',  [
+    .factory('authInterceptor', [
         '$injector',
         '$q',
         '$rootScope',
@@ -93,7 +90,7 @@ angular.module('services.auth', ['app.config'])
 
                     var token = authService.getToken();
                     if (token) {
-                        req.headers['Authorization'] = "Bearer " +  token;
+                        req.headers['Authorization'] = "Bearer " + token;
                     }
                     return req;
                 }

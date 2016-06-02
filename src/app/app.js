@@ -18,15 +18,18 @@ var app = angular.module('app', [
         $httpProvider.interceptors.push('authInterceptor');
     }])
 
-    .controller('AppCtrl', function AppCtrl($scope, $rootScope, $state, AuthService, AUTH_EVENTS, SUCCESS_EVENTS) {
-        $rootScope.$on(AUTH_EVENTS.loginSuccess, function () {
-            console.log('login success')
-        });
 
+    .controller('AppCtrl', function AppCtrl($scope, $rootScope, $state, AuthService, AUTH_EVENTS, SUCCESS_EVENTS) {
         $scope.currentUser = null;
 
-        AuthService.authenticate().then(function (data) {
-            $scope.currentUser = data
+        if (AuthService.getToken() !== null) {
+            AuthService.authenticate().then(function (data) {
+                $scope.currentUser = data
+            });
+        }
+
+        $rootScope.$on(AUTH_EVENTS.loginSuccess, function () {
+            console.log('login success')
         });
 
         $scope.isAuthorized = AuthService.isAuthorized;

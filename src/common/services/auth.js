@@ -11,11 +11,11 @@ angular.module('services.auth', ['app.config'])
 
             authService.login = function (credentials) {
                 return $http
-                    .post(API_URL + '/login', credentials, {headers: {'Content-Type': 'application/json'}})
+                    .post(API_URL + '/users/login', credentials, {headers: {'Content-Type': 'application/json'}})
                     .then(function (res) {
                         tokenService.save(res.data.token);
-                        userService.create(res.data.user.name, res.data.user.role);
-                        return res.data.user;
+                        userService.create(credentials.email, 'user');
+                        return userService;
                     })
             };
 
@@ -25,7 +25,7 @@ angular.module('services.auth', ['app.config'])
                     .post(API_URL + '/token', null, {headers: {'x-access-token': token}})
                     .then(function (res) {
                         if (res.data.success !== false) {
-                            userService.create(res.data.user.name, res.data.user.role);
+                            userService.create(credentials.email, 'user');
                         }
                         return res.data.user;
                     })
@@ -35,11 +35,11 @@ angular.module('services.auth', ['app.config'])
             //weak authentication mechanism for client side
             //doesn't really matter since sensible data is protected on the server side
             authService.isAuthenticated = function () {
-                return (userService.name && tokenService.load() !== null)
+                return (userService.email && tokenService.load() !== null)
             };
 
             authService.isAuthorized = function () {
-                return (userService.name && (userService.role === 'admin'));
+                return (userService.email && (userService.role === 'user'));
             };
 
             authService.logout = function () {
@@ -56,11 +56,11 @@ angular.module('services.auth', ['app.config'])
 
     .service('userService', function () {
         this.create = function (name, role) {
-            this.name = name;
+            this.email = name;
             this.role = role;
         };
         this.destroy = function () {
-            this.name = null;
+            this.email = null;
             this.role = null;
         };
     })

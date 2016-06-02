@@ -1,10 +1,10 @@
 <form ng-submit="login(credentials)" name="loginForm">
     <div class="form-group">
         <label for="email">Email:</label>
-        <input ng-model="user.email" type="email" class="form-control" id="email">
+        <input ng-model="credentials.email" type="email" class="form-control" id="email">
 
         <label for="password">Password:</label>
-        <input ng-model="user.password" type="password" class="form-control" id="password">
+        <input ng-model="credentials.password" type="password" class="form-control" id="password">
     </div>
     <input type="submit" class="btn btn-info" value="Submit">
 </form>

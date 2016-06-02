@@ -24,20 +24,20 @@ var app = angular.module('app', [
 
         $scope.currentUser = null;
 
-        AuthService.authenticate().then(function (data) {
-            $scope.currentUser = data
-        });
+        // AuthService.authenticate().then(function (data) {
+        //     $scope.currentUser = data
+        // });
 
         $scope.isAuthorized = AuthService.isAuthorized;
 
         $scope.setCurrentUser = function (user) {
             $scope.currentUser = user;
+            console.log($scope.currentUser)
         };
 
         $scope.logout = function () {
             AuthService.logout();
             $scope.currentUser = null;
-            $state.go('app.home');
         };
 
         $scope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
@@ -47,10 +47,10 @@ var app = angular.module('app', [
         });
 
         $scope.$on("$stateChangeStart", function (event, toState, toParams, fromState, fromParams) {
-            console.log(toState.name);
             var protectedStates = ["configurator"];
             if (protectedStates.indexOf(toState.name) > -1) {
                 if (!AuthService.isAuthenticated() || !AuthService.isAuthorized()) {
+                    alert('Not authorized, please login first')
                     $state.transitionTo("login");
                     event.preventDefault();
                 }

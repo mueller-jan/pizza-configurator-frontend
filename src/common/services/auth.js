@@ -11,7 +11,7 @@ angular.module('services.auth', ['app.config'])
 
             authService.login = function (credentials) {
                 return $http
-                    .post(API_URL + '/login', credentials, {headers: {'Content-Type': 'application/json'}})
+                    .post(API_URL + '/auth/login', credentials, {headers: {'Content-Type': 'application/json'}})
                     .then(function (res) {
                         tokenService.save(res.data.tokenMap.token);
                         userService.create(res.data.username, 'user');
@@ -22,7 +22,7 @@ angular.module('services.auth', ['app.config'])
             authService.authenticate = function () {
                 var token = tokenService.load();
                 return $http
-                    .get(API_URL + '/authenticate')
+                    .get(API_URL + '/auth/authenticate')
                     .then(function (res) {
                         userService.create(res.data, 'user');
                         return userService;

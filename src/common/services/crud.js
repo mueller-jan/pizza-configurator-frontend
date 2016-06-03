@@ -9,6 +9,10 @@ angular.module('services.crud', ['app.config'])
                 return $http.post(API_URL + '/users/' + userId + '/addresses', address, {headers: {'Content-Type': 'application/json'}});
             },
 
+            getIngredients: function () {
+                return $http.get(API_URL + '/ingredients');
+            },
+
             getUserInfo: function () {
                 return $http.get(API_URL + '/users/info');
             }

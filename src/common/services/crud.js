@@ -14,7 +14,7 @@ angular.module('services.crud', ['app.config'])
             },
 
             getUserInfo: function () {
-                return $http.get(API_URL + '/users/info');
+                return $http.get(API_URL + '/user-info');
             }
         }
     });

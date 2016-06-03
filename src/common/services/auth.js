@@ -13,8 +13,8 @@ angular.module('services.auth', ['app.config'])
                 return $http
                     .post(API_URL + '/login', credentials, {headers: {'Content-Type': 'application/json'}})
                     .then(function (res) {
-                        tokenService.save(res.data.token);
-                        userService.create(credentials.email, 'user');
+                        tokenService.save(res.data.tokenMap.token);
+                        userService.create(res.data.username, 'user');
                         return userService;
                     })
             };

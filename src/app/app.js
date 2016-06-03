@@ -51,7 +51,7 @@ var app = angular.module('app', [
         });
 
         $scope.$on("$stateChangeStart", function (event, toState, toParams, fromState, fromParams) {
-            var protectedStates = ['configurator', 'profile'];
+            var protectedStates = ['profile'];
             if (protectedStates.indexOf(toState.name) > -1) {
                 if (!AuthService.isAuthenticated() || !AuthService.isAuthorized()) {
                     alert('Not authorized, please login first');

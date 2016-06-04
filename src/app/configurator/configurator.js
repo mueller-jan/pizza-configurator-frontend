@@ -48,6 +48,7 @@ angular.module('app.configurator',[
                     }
                 }
             }
+            $scope.calculatePrice();
         };
 
         $scope.savePizza = function() {

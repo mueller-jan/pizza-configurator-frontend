@@ -18,20 +18,42 @@ angular.module('app.configurator',[
             resolve: {
                 ingredients: function (CrudService) {
                     return CrudService.getIngredients();
+                },
+                pizzas: function(CrudService) {
+                  return CrudService.getPizzasFromUser()
                 }
             }
         });
     })
 
-    .controller('configuratorCtrl', function ConfiguratorController($scope, ingredients) {
+    .controller('configuratorCtrl', function ConfiguratorController($scope, ingredients, pizzas, CrudService) {
         $scope.selectedIngredients = [];
         
         $scope.ingredients = ingredients.data;
-        
+        $scope.pizzas = pizzas.data;
+
         //create imagePath from ingredient-name
         for (var i = 0; i < $scope.ingredients.length; i++) {
             $scope.ingredients[i].imagePath = './assets/' + $scope.ingredients[i].name + '.png';
         }
+
+        $scope.loadPizza = function(pizza) {
+            $scope.pizza = pizza;
+        };
+
+        $scope.savePizza = function() {
+            for (var i = 0; i < $scope.selectedIngredients.length; i++) {
+                $scope.pizza.ingredients = [];
+                $scope.pizza.ingredients.push($scope.selectedIngredients[i].name);
+            }
+
+            CrudService.createPizza($scope.pizza).then(function(res) {
+                alert("pizza saved");
+                CrudService.getPizzasFromUser().then(function(res) {
+                    $scope.pizzas = res.data;
+                })
+            });
+        };
 
         $scope.randomize = function () {
             $scope.selectedIngredients = [];

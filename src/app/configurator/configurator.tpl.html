@@ -1,7 +1,21 @@
 <div class="row">
     <div class="col-md-3">
+        <h3>Pizzas</h3>
+        <ul>
+            <li ng-click="loadPizza(pizza)" ng-repeat="pizza in pizzas">
+                {{pizza.id}} {{pizza.name}}
+            </li>
+        </ul>
+    </div>
+    <div class="col-md-6">
+        <div id="pizza">
+            <img src="assets/pizza-base.png"/>
+            <img ng-repeat="ingredient in selectedIngredients" ng-src="{{ingredient.imagePath}}"/>
+        </div>
+    </div>
+    <div class="col-md-3">
         <h3>Ingredients</h3>
-        <button type="button" class="btn btn-default btn-sm" ng-click="randomize()">Randomize</button>
+        <!--<button type="button" class="btn btn-default btn-sm" ng-click="randomize()">Randomize</button>-->
         <div ng-repeat="ingredient in ingredients">
             <label>
                 <input type="checkbox" checklist-model="selectedIngredients" checklist-value="ingredient">
@@ -9,11 +23,22 @@
             </label>
             <br>
         </div>
-    </div>
-    <div class="col-md-9">
-        <div id="pizza">
-            <img src="assets/pizza-base.png"/>
-            <img ng-repeat="ingredient in selectedIngredients" ng-src="{{ingredient.imagePath}}"/>
+        <label for="pizza-name">Name:</label>
+        <input ng-model="pizza.name" class="form-control" id="pizza-name">
+
+        <div class="form-group">
+            <label for="size">Select size:</label>
+            <select ng-model="pizza.sizeName" class="form-control" id="size">
+                <option>xxl</option>
+                <option>xl</option>
+                <option>l</option>
+                <option>s</option>
+            </select>
         </div>
+
+        <label for="price">Price:</label>
+        <input ng-model="pizza.price" type="number" class="form-control" id="price">
+        <button type="button" class="btn btn-default btn-sm" ng-click="savePizza()">Save Pizza</button>
     </div>
+
 </div>

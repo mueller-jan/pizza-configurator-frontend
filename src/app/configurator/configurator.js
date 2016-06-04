@@ -28,7 +28,7 @@ angular.module('app.configurator',[
 
     .controller('configuratorCtrl', function ConfiguratorController($scope, ingredients, pizzas, CrudService) {
         $scope.selectedIngredients = [];
-        
+        $scope.price = 0;
         $scope.ingredients = ingredients.data;
         $scope.pizzas = pizzas.data;
 
@@ -50,7 +50,6 @@ angular.module('app.configurator',[
             }
         };
 
-
         $scope.savePizza = function() {
             $scope.pizza.ingredients = [];
             for (var i = 0; i < $scope.selectedIngredients.length; i++) {
@@ -63,6 +62,14 @@ angular.module('app.configurator',[
                     $scope.pizzas = res.data;
                 })
             });
+        };
+
+        $scope.calculatePrice = function() {
+            $scope.price = 0;
+            for (var i = 0; i < $scope.selectedIngredients.length; i++) {
+                var ingredientPrice = $scope.selectedIngredients[i].price;
+                $scope.price += ingredientPrice;
+            }
         };
 
         $scope.randomize = function () {

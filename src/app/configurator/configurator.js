@@ -39,11 +39,21 @@ angular.module('app.configurator',[
 
         $scope.loadPizza = function(pizza) {
             $scope.pizza = pizza;
+            $scope.selectedIngredients = [];
+            for (var i = 0; i < pizza.ingredients.length; i++) {
+                var ingredientName = pizza.ingredients[i];
+                for (var j = 0; j < $scope.ingredients.length; j++) {
+                    if ($scope.ingredients[j].name === ingredientName) {
+                        $scope.selectedIngredients.push($scope.ingredients[i]);
+                    }
+                }
+            }
         };
 
+
         $scope.savePizza = function() {
+            $scope.pizza.ingredients = [];
             for (var i = 0; i < $scope.selectedIngredients.length; i++) {
-                $scope.pizza.ingredients = [];
                 $scope.pizza.ingredients.push($scope.selectedIngredients[i].name);
             }
 
@@ -64,5 +74,4 @@ angular.module('app.configurator',[
                 }
             }
         };
-
     });

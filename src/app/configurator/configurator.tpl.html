@@ -3,19 +3,21 @@
         <h3>Suggested Pizzas</h3>
         <div ng-repeat="suggestion in suggestions">
             <a href ng-click="loadSuggestion(suggestion)">
-                {{suggestion.id}} {{suggestion.name}}
+                {{suggestion.name}}
             </a>
         </div>
         <h3>Your Pizzas</h3>
         <div ng-repeat="pizza in pizzas">
             <a href ng-click="loadPizza(pizza)">
-                {{pizza.id}} {{pizza.name}}
+                {{pizza.name}}
             </a>
             <a href ng-click="deletePizza(pizza.id)">
                 <i class="fa fa-times"></i>
             </a>
         </div>
+        <a href ng-click="newPizza()">New pizza</a>
     </div>
+
     <div class="col-md-6">
         <div id="pizza">
             <img src="assets/pizza-base.png"/>
@@ -51,7 +53,7 @@
 
         <div>Price: {{price}} €</div>
 
-        <button type="button" class="btn btn-default btn-sm" ng-click="savePizza()">{{buttonName}}</button>
+        <button type="button" class="btn btn-default btn-sm" ng-click="savePizza()">{{submitButtonName}}</button>
     </div>
 
 </div>

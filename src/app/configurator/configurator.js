@@ -35,16 +35,22 @@ angular.module('app.configurator', [
         $scope.ingredients = ingredients.data;
         $scope.suggestions = suggestions.data;
         $scope.pizzas = pizzas.data;
-        $scope.buttonName = "Create Pizza";
-
-
+        $scope.submitButtonName = "Create Pizza";
+        
         //create imagePath from ingredient-name
         for (var i = 0; i < $scope.ingredients.length; i++) {
             $scope.ingredients[i].imagePath = './assets/' + $scope.ingredients[i].name + '.png';
         }
 
+        $scope.newPizza = function() {
+            $scope.submitButtonName = "Create Pizza";
+            $scope.pizza = {};
+            resetIngredients();
+            $scope.price = 0;
+        };
+
         $scope.loadSuggestion = function (suggestion) {
-            $scope.buttonName = "Create Pizza";
+            $scope.submitButtonName = "Create Pizza";
             delete suggestion.id;
             $scope.loadPizza(suggestion);
         };
@@ -52,7 +58,7 @@ angular.module('app.configurator', [
         $scope.loadPizza = function (pizza) {
             resetIngredients();
             if (pizza.id) {
-                $scope.buttonName = "Update Pizza";
+                $scope.submitButtonName = "Update Pizza";
             }
             $scope.pizza = pizza;
 
@@ -94,6 +100,10 @@ angular.module('app.configurator', [
         };
 
         $scope.deletePizza = function (pizzaId) {
+            if (pizzaId === $scope.pizza.id) {
+                delete $scope.pizza.id;
+                $scope.submitButtonName = "Create Pizza"
+            }
             CrudService.deletePizza(pizzaId).then(function () {
                 CrudService.getPizzasFromUser().then(function (res) {
                     $scope.pizzas = res.data;

@@ -24,7 +24,7 @@
     </div>
     <div class="col-md-3">
         <h3>Ingredients</h3>
-        <!--<button type="button" class="btn btn-default btn-sm" ng-click="randomize()">Randomize</button>-->
+        <a href ng-click="randomize()">Surprise Me</a>
         <div ng-repeat="ingredient in ingredients">
             <label>
                 <input ng-click="calculatePrice()" type="checkbox" checklist-model="selectedIngredients"
@@ -51,7 +51,7 @@
 
         <div>Price: {{price}} €</div>
 
-        <button type="button" class="btn btn-default btn-sm" ng-click="savePizza()">Save Pizza</button>
+        <button type="button" class="btn btn-default btn-sm" ng-click="savePizza()">{{buttonName}}</button>
     </div>
 
 </div>

@@ -35,6 +35,7 @@ angular.module('app.configurator', [
         $scope.ingredients = ingredients.data;
         $scope.suggestions = suggestions.data;
         $scope.pizzas = pizzas.data;
+        $scope.buttonName = "Create Pizza";
 
 
         //create imagePath from ingredient-name
@@ -42,14 +43,19 @@ angular.module('app.configurator', [
             $scope.ingredients[i].imagePath = './assets/' + $scope.ingredients[i].name + '.png';
         }
 
-        $scope.loadSuggestion = function(suggestion) {
+        $scope.loadSuggestion = function (suggestion) {
+            $scope.buttonName = "Create Pizza";
             delete suggestion.id;
             $scope.loadPizza(suggestion);
         };
 
         $scope.loadPizza = function (pizza) {
+            resetIngredients();
+            if (pizza.id) {
+                $scope.buttonName = "Update Pizza";
+            }
             $scope.pizza = pizza;
-            $scope.selectedIngredients = [];
+
             for (var i = 0; i < pizza.ingredients.length; i++) {
                 var ingredientName = pizza.ingredients[i];
                 for (var j = 0; j < $scope.ingredients.length; j++) {
@@ -104,7 +110,7 @@ angular.module('app.configurator', [
         };
 
         $scope.randomize = function () {
-            $scope.selectedIngredients = [];
+            resetIngredients();
 
             for (var i = 0; i < $scope.ingredients.length; i++) {
                 if (Math.random() < 0.5) {
@@ -112,4 +118,8 @@ angular.module('app.configurator', [
                 }
             }
         };
+
+        function resetIngredients() {
+            $scope.selectedIngredients.splice(0, $scope.selectedIngredients.length);
+        }
     });

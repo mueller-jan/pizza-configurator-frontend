@@ -21,21 +21,31 @@ angular.module('app.configurator', [
                 },
                 pizzas: function (CrudService) {
                     return CrudService.getPizzasFromUser()
+                },
+                suggestions: function (CrudService) {
+                    return CrudService.getSuggestions();
                 }
             }
         });
     })
 
-    .controller('configuratorCtrl', function ConfiguratorController($scope, ingredients, pizzas, CrudService) {
+    .controller('configuratorCtrl', function ConfiguratorController($scope, ingredients, pizzas, suggestions, CrudService) {
         $scope.selectedIngredients = [];
         $scope.price = 0;
         $scope.ingredients = ingredients.data;
+        $scope.suggestions = suggestions.data;
         $scope.pizzas = pizzas.data;
+
 
         //create imagePath from ingredient-name
         for (var i = 0; i < $scope.ingredients.length; i++) {
             $scope.ingredients[i].imagePath = './assets/' + $scope.ingredients[i].name + '.png';
         }
+
+        $scope.loadSuggestion = function(suggestion) {
+            delete suggestion.id;
+            $scope.loadPizza(suggestion);
+        };
 
         $scope.loadPizza = function (pizza) {
             $scope.pizza = pizza;
@@ -44,7 +54,7 @@ angular.module('app.configurator', [
                 var ingredientName = pizza.ingredients[i];
                 for (var j = 0; j < $scope.ingredients.length; j++) {
                     if ($scope.ingredients[j].name === ingredientName) {
-                        $scope.selectedIngredients.push($scope.ingredients[i]);
+                        $scope.selectedIngredients.push($scope.ingredients[j]);
                     }
                 }
             }

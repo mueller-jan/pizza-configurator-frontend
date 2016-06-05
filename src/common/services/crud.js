@@ -30,6 +30,10 @@ angular.module('services.crud', ['app.config'])
                 return $http.get(API_URL + '/user/pizzas');
             },
 
+            getSuggestions: function() {
+                return $http.get(API_URL + '/pizza/suggestions')
+            },
+
             getIngredients: function () {
                 return $http.get(API_URL + '/ingredients');
             }

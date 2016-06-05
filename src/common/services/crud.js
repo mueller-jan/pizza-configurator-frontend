@@ -21,6 +21,10 @@ angular.module('services.crud', ['app.config'])
             updatePizza: function(pizza) {
                 return $http.put(API_URL + '/user/pizza', pizza, {headers: {'Content-Type': 'application/json'}});
             },
+            
+            deletePizza: function(pizzaId) {
+                return $http.delete(API_URL + '/user/pizza/' + pizzaId);
+            },
 
             getPizzasFromUser: function () {
                 return $http.get(API_URL + '/user/pizzas');

@@ -52,31 +52,37 @@ angular.module('app.configurator', [
         };
 
         $scope.savePizza = function () {
-            console.log($scope.pizza);
-
-
             $scope.pizza.ingredients = [];
+
             for (var i = 0; i < $scope.selectedIngredients.length; i++) {
                 $scope.pizza.ingredients.push($scope.selectedIngredients[i].name);
             }
 
             if (!$scope.pizza.id) {
-                //if pizza has no id create new pizza
-                CrudService.createPizza($scope.pizza).then(function (res) {
+                //if pizza has no id, create new pizza
+                CrudService.createPizza($scope.pizza).then(function () {
                     alert("pizza saved");
                     CrudService.getPizzasFromUser().then(function (res) {
                         $scope.pizzas = res.data;
                     })
                 });
             } else {
-                //if pizza has id update pizza
-                CrudService.updatePizza($scope.pizza).then(function (res) {
+                //if pizza has id, update pizza
+                CrudService.updatePizza($scope.pizza).then(function () {
                     alert("pizza updated");
                     CrudService.getPizzasFromUser().then(function (res) {
                         $scope.pizzas = res.data;
                     })
                 });
             }
+        };
+
+        $scope.deletePizza = function (pizzaId) {
+            CrudService.deletePizza(pizzaId).then(function () {
+                CrudService.getPizzasFromUser().then(function (res) {
+                    $scope.pizzas = res.data;
+                })
+            })
         };
 
         $scope.calculatePrice = function () {

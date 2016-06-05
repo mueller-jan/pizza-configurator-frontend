@@ -18,6 +18,10 @@ angular.module('services.crud', ['app.config'])
                 return $http.post(API_URL + '/user/pizza', pizza, {headers: {'Content-Type': 'application/json'}});
             },
 
+            updatePizza: function(pizza) {
+                return $http.put(API_URL + '/user/pizza', pizza, {headers: {'Content-Type': 'application/json'}});
+            },
+
             getPizzasFromUser: function () {
                 return $http.get(API_URL + '/user/pizzas');
             },

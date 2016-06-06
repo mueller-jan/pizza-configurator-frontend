@@ -50,9 +50,10 @@ angular.module('app.configurator', [
         };
 
         $scope.loadSuggestion = function (suggestion) {
+            //TODO: outsource pizza creation to PizzaFactory
             $scope.submitButtonName = "Create Pizza";
-            delete suggestion.id;
-            $scope.loadPizza(suggestion);
+            var pizza = {ingredients: suggestion.ingredients, name: suggestion.name, sizeName: suggestion.sizeName};
+            $scope.loadPizza(pizza);
         };
 
         $scope.loadPizza = function (pizza) {
@@ -100,7 +101,11 @@ angular.module('app.configurator', [
         };
 
         $scope.deletePizza = function (pizzaId) {
-            if (pizzaId === $scope.pizza.id) {
+            if ($scope.pizza && $scope.pizza.id) {
+                var id = $scope.pizza.id;
+            }
+
+            if (id && pizzaId === id) {
                 delete $scope.pizza.id;
                 $scope.submitButtonName = "Create Pizza"
             }

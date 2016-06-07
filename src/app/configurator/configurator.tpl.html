@@ -25,35 +25,25 @@
         </div>
     </div>
     <div class="col-md-3">
-        <h3>Ingredients</h3>
-        <a href ng-click="randomize()">Surprise Me</a>
-        <div ng-repeat="ingredient in ingredients">
-            <label>
-                <input ng-click="calculatePrice()" type="checkbox" checklist-model="selectedIngredients"
-                       checklist-value="ingredient">
-                {{ingredient.name}}
-            </label>
-            <br>
-        </div>
-
+        <h3>Pizza creation</h3>
+        <div ui-view="steps"></div>
         <div>
-            <label for="pizza-name">Name:</label>
-            <input ng-model="pizza.name" class="form-control" id="pizza-name">
+            <button type="button" class="btn btn-default btn-sm" ng-hide="currentState === 0"
+                    ng-click="nextState(false)">Back
+            </button>
+            <button type="button" class="btn btn-default btn-sm" ng-hide="currentState === states.length"
+                    ng-click="nextState(true)">Next
+            </button>
+        </div>
+        <div>
+            <button type="button" class="btn btn-default btn-sm" ng-click="savePizza()">{{submitButtonName}}</button>
         </div>
 
-        <div class="form-group">
-            <label for="size">Select size:</label>
-            <select ng-model="pizza.sizeName" class="form-control" id="size">
-                <option>xxl</option>
-                <option>xl</option>
-                <option>l</option>
-                <option>s</option>
-            </select>
-        </div>
 
-        <div>Price: {{price}} €</div>
+        <!--<div>Price: {{price}} €</div>-->
 
-        <button type="button" class="btn btn-default btn-sm" ng-click="savePizza()">{{submitButtonName}}</button>
+        <!--<button type="button" class="btn btn-default btn-sm" ng-click="savePizza()">{{submitButtonName}}</button>-->
     </div>
+
 
 </div>

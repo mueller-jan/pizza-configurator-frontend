@@ -1,5 +1,9 @@
 angular.module('app.configurator', [
         'ui.router',
+        'app.configurator.start',
+        'app.configurator.dough',
+        'app.configurator.sauce',
+        'app.configurator.ingredients',
         'checklist-model',
         'ui.bootstrap',
         'services.crud'
@@ -26,27 +30,45 @@ angular.module('app.configurator', [
                     return CrudService.getSuggestions();
                 }
             }
-        });
+        })
+
     })
 
-    .controller('configuratorCtrl', function ConfiguratorController($scope, ingredients, pizzas, suggestions, CrudService) {
+    .controller('configuratorCtrl', function ConfiguratorController($scope, $state, ingredients, pizzas, suggestions, CrudService) {
         $scope.selectedIngredients = [];
         $scope.price = 0;
         $scope.ingredients = ingredients.data;
         $scope.suggestions = suggestions.data;
         $scope.pizzas = pizzas.data;
         $scope.submitButtonName = "Create Pizza";
-        
+        $scope.currentState = 0;
+        $scope.states = ["configurator.start", "configurator.dough", "configurator.sauce", "configurator.ingredients"];
+
+        $scope.nextState = function (forward) {
+            if (forward) {
+                if ($scope.currentState < $scope.states.length) {
+                    $scope.currentState++;
+                }
+            } else {
+                if ($scope.currentState > 0) {
+                    $scope.currentState--;
+                }
+            }
+            $state.go($scope.states[$scope.currentState])
+        };
+
         //create imagePath from ingredient-name
         for (var i = 0; i < $scope.ingredients.length; i++) {
             $scope.ingredients[i].imagePath = './assets/' + $scope.ingredients[i].name + '.png';
         }
 
-        $scope.newPizza = function() {
+        $scope.newPizza = function () {
             $scope.submitButtonName = "Create Pizza";
             $scope.pizza = {};
             resetIngredients();
             $scope.price = 0;
+            $scope.currentState = 0;
+            $state.go($scope.states[$scope.currentState])
         };
 
         $scope.loadSuggestion = function (suggestion) {
@@ -137,4 +159,5 @@ angular.module('app.configurator', [
         function resetIngredients() {
             $scope.selectedIngredients.splice(0, $scope.selectedIngredients.length);
         }
-    });
+    })
+;

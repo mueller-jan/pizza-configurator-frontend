@@ -1,16 +1,3 @@
-Select your ingredients
-
-<h3>Ingredients</h3>
-<a href ng-click="randomize()">Surprise Me</a>
-<div ng-repeat="ingredient in ingredients">
-    <label>
-        <input ng-click="calculatePrice()" type="checkbox" checklist-model="selectedIngredients"
-               checklist-value="ingredient">
-        {{ingredient.name}}
-    </label>
-    <br>
-</div>
-
 <div>
     <label for="pizza-name">Name:</label>
     <input ng-model="pizza.name" class="form-control" id="pizza-name">
@@ -24,4 +11,12 @@ Select your ingredients
         <option>l</option>
         <option>s</option>
     </select>
+</div>
+
+<div>
+    <button type="button" class="btn btn-default btn-sm" ng-click="savePizza()">{{submitButtonName}}</button>
+</div>
+<br>
+<div>
+    <button type="button" class="btn btn-default btn-sm" ng-click="">Place Order</button>
 </div>

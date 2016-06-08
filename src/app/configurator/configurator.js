@@ -2,8 +2,11 @@ angular.module('app.configurator', [
         'ui.router',
         'app.configurator.start',
         'app.configurator.dough',
-        'app.configurator.sauce',
-        'app.configurator.ingredients',
+        'app.configurator.meat',
+        'app.configurator.vegetable',
+        'app.configurator.fruit',
+        'app.configurator.cheese',
+        'app.configurator.options',
         'checklist-model',
         'ui.bootstrap',
         'services.crud'
@@ -38,11 +41,21 @@ angular.module('app.configurator', [
         $scope.selectedIngredients = [];
         $scope.price = 0;
         $scope.ingredients = ingredients.data;
+        $scope.selectableIngredients = [];
         $scope.suggestions = suggestions.data;
         $scope.pizzas = pizzas.data;
         $scope.submitButtonName = "Create Pizza";
         $scope.currentState = 0;
-        $scope.states = ["configurator.start", "configurator.dough", "configurator.sauce", "configurator.ingredients"];
+
+        $scope.states = [
+            "configurator.start",
+            "configurator.dough",
+            "configurator.meat",
+            "configurator.vegetable",
+            "configurator.fruit",
+            "configurator.cheese",
+            "configurator.options"
+        ];
 
         $scope.nextState = function (forward) {
             if (forward) {
@@ -65,12 +78,12 @@ angular.module('app.configurator', [
         $scope.newPizza = function () {
             $scope.submitButtonName = "Create Pizza";
             $scope.pizza = {};
-            resetIngredients();
+            $scope.resetIngredients();
             $scope.price = 0;
             $scope.currentState = 0;
             $state.go($scope.states[$scope.currentState])
         };
-
+        
         $scope.loadSuggestion = function (suggestion) {
             //TODO: outsource pizza creation to PizzaFactory
             $scope.submitButtonName = "Create Pizza";
@@ -79,20 +92,17 @@ angular.module('app.configurator', [
         };
 
         $scope.loadPizza = function (pizza) {
-            resetIngredients();
+            resetState();
+            $scope.resetIngredients();
+
             if (pizza.id) {
                 $scope.submitButtonName = "Update Pizza";
             }
+
             $scope.pizza = pizza;
 
-            for (var i = 0; i < pizza.ingredients.length; i++) {
-                var ingredientName = pizza.ingredients[i];
-                for (var j = 0; j < $scope.ingredients.length; j++) {
-                    if ($scope.ingredients[j].name === ingredientName) {
-                        $scope.selectedIngredients.push($scope.ingredients[j]);
-                    }
-                }
-            }
+            selectLoadedIngredients(pizza);
+
             $scope.calculatePrice();
         };
 
@@ -139,6 +149,7 @@ angular.module('app.configurator', [
         };
 
         $scope.calculatePrice = function () {
+            console.log($scope.selectedIngredients)
             $scope.price = 0;
             for (var i = 0; i < $scope.selectedIngredients.length; i++) {
                 var ingredientPrice = $scope.selectedIngredients[i].price;
@@ -147,7 +158,7 @@ angular.module('app.configurator', [
         };
 
         $scope.randomize = function () {
-            resetIngredients();
+            $scope.resetIngredients();
 
             for (var i = 0; i < $scope.ingredients.length; i++) {
                 if (Math.random() < 0.5) {
@@ -156,8 +167,69 @@ angular.module('app.configurator', [
             }
         };
 
-        function resetIngredients() {
+        $scope.resetIngredients = function () {
             $scope.selectedIngredients.splice(0, $scope.selectedIngredients.length);
+        };
+
+        /**
+         * Get Ingredients filtered by category
+         * @param categories
+         * @returns {Array}
+         */
+        $scope.getIngredientsByCategories = function (categories) {
+            if (categories.constructor !== Array) {
+                categories = [categories]
+            }
+
+            var ingredients = [];
+            for (var i = 0; i < $scope.ingredients.length; i++) {
+                if (categories.indexOf($scope.ingredients[i].category) !== -1) {
+                    ingredients.push($scope.ingredients[i]);
+                }
+            }
+            return ingredients;
+        };
+
+        $scope.findIngredientByName = function (name) {
+            for (var i = 0; i < $scope.ingredients.length; i++) {
+                if ($scope.ingredients[i].name === name) {
+                    return $scope.ingredients[i];
+                }
+            }
+        };
+        
+
+        $scope.isIngredientInSelectedIngredients = function (ingredient) {
+            for (var i = 0; i < $scope.selectedIngredients.length; i++) {
+                if ($scope.selectedIngredients[i].name === ingredient.name) {
+                    return true;
+                }
+            }
+            return false;
+        };
+
+        $scope.getSelectedIngredientOfCategory = function(category) {
+            for (var i = 0; i < $scope.selectedIngredients.length; i++) {
+                if ($scope.selectedIngredients[i].category === category) {
+                    return $scope.selectedIngredients[i];
+                }
+            }
+        };
+
+        function selectLoadedIngredients(pizza) {
+            for (var i = 0; i < pizza.ingredients.length; i++) {
+                var ingredientName = pizza.ingredients[i];
+                for (var j = 0; j < $scope.ingredients.length; j++) {
+                    if ($scope.ingredients[j].name === ingredientName) {
+                        $scope.selectedIngredients.push($scope.ingredients[j]);
+                    }
+                }
+            }
+        }
+
+        function resetState() {
+            $scope.currentState = 0;
+            $state.go($scope.states[$scope.currentState])
         }
     })
 ;

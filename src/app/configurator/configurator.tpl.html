@@ -24,9 +24,10 @@
             <img ng-repeat="ingredient in selectedIngredients" ng-src="{{ingredient.imagePath}}"/>
         </div>
     </div>
+
     <div class="col-md-3">
-        <h3>Pizza creation</h3>
-        <div ui-view="steps"></div>
+        <h3>Pizza Creation</h3>
+
         <div>
             <button type="button" class="btn btn-default btn-sm" ng-hide="currentState === 0"
                     ng-click="nextState(false)">Back
@@ -35,12 +36,9 @@
                     ng-click="nextState(true)">Next
             </button>
         </div>
-        <div>
-            <button type="button" class="btn btn-default btn-sm" ng-click="savePizza()">{{submitButtonName}}</button>
-        </div>
-
-
-        <!--<div>Price: {{price}} €</div>-->
+        <div ui-view="steps"></div>
+        <br>
+        <div ng-hide="currentState === 0">Price: {{price}} €</div>
 
         <!--<button type="button" class="btn btn-default btn-sm" ng-click="savePizza()">{{submitButtonName}}</button>-->
     </div>

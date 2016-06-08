@@ -1,1 +1,9 @@
-Select dough
+<h3>Select your Dough</h3>
+<div ng-repeat="ingredient in selectableIngredients">
+    <label>
+        <input ng-click="addDough(ingredient)" ng-checked="ingredient.checked" type="radio">
+
+        {{ingredient.name}}
+    </label>
+    <br>
+</div>

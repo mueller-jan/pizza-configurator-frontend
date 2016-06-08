@@ -21,7 +21,7 @@ angular.module('app.register', [
         $scope.register = function (user) {
             CrudService.createUser(user).then(function () {
                 alert('Registration successful');
-                $state.go('home');
+                $state.go('login');
             });
         };
     });

@@ -36,6 +36,10 @@ angular.module('services.crud', ['app.config'])
 
             getIngredients: function () {
                 return $http.get(API_URL + '/ingredients');
+            },
+
+            createOrder: function(order) {
+                return $http.post(API_URL + '/user/order', order, {headers: {'Content-Type': 'application/json'}});
             }
         }
     });

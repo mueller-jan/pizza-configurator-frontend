@@ -16,6 +16,7 @@
             </a>
         </div>
         <a href ng-click="newPizza()">New pizza</a>
+
     </div>
 
     <div class="col-md-6">
@@ -39,6 +40,7 @@
         <div ui-view="steps"></div>
         <br>
         <div ng-hide="currentState === 0">Price: {{price}} €</div>
+        <button type="button" class="btn btn-default btn-sm" ng-click="createOrder()">Place Order</button>
 
         <!--<button type="button" class="btn btn-default btn-sm" ng-click="savePizza()">{{submitButtonName}}</button>-->
     </div>

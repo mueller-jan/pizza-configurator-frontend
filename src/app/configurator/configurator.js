@@ -216,6 +216,15 @@ angular.module('app.configurator', [
             }
         };
 
+        $scope.createOrder = function() {
+            var order = {
+                "pizzaIds": [$scope.pizza.id]
+            };
+            CrudService.createOrder(order).then(function(res) {
+                alert("Order created");
+            })
+        };
+
         function selectLoadedIngredients(pizza) {
             for (var i = 0; i < pizza.ingredients.length; i++) {
                 var ingredientName = pizza.ingredients[i];

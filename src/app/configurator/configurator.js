@@ -31,13 +31,16 @@ angular.module('app.configurator', [
                 },
                 suggestions: function (CrudService) {
                     return CrudService.getSuggestions();
+                },
+                addresses: function (CrudService) {
+                    return CrudService.getAddressesFromUser();
                 }
             }
         })
 
     })
 
-    .controller('configuratorCtrl', function ConfiguratorController($scope, $state, ingredients, pizzas, suggestions, CrudService) {
+    .controller('configuratorCtrl', function ConfiguratorController($scope, $state, ingredients, pizzas, suggestions, addresses, CrudService) {
         $scope.selectedIngredients = [];
         $scope.price = 0;
         $scope.ingredients = ingredients.data;
@@ -48,6 +51,10 @@ angular.module('app.configurator', [
         $scope.currentState = 0;
         $scope.pizza = {};
         $scope.order = {};
+        $scope.addresses = addresses.data;
+
+        $scope.selectedAddress = addresses.data[0].id;
+    
 
         $scope.states = [
             "configurator.start",
@@ -201,6 +208,7 @@ angular.module('app.configurator', [
 
         $scope.createOrder = function () {
             $scope.order = {
+                addressId: $scope.selectedAddress,
                 pizzaIds:  [$scope.pizza.id]
             };
             CrudService.createOrder($scope.order).then(function (res) {

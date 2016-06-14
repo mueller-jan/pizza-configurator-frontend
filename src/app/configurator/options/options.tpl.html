@@ -14,7 +14,18 @@
 </div>
 
 <h3>Address</h3>
-<div class="form-group">
+
+<div ng-repeat="address in addresses" class="form-group">
+    <input ng-model="$parent.selectedAddress" ng-value="address.id" type="radio">
+    <div>Street: {{address.id}}</div>
+    <div>Street: {{address.street}}</div>
+    <div>Zipcode: {{address.zipcode}}</div>
+    <div>Housenumber: {{address.housenumber}}</div>
+    <div>City: {{address.city}}</div>
+    <hr>
+</div>
+
+<div ng-hide="currentUser" class="form-group">
     <label for="street">Street:</label>
     <input ng-model="order.address.street" type="text" class="form-control" id="street">
 

@@ -31,7 +31,9 @@ angular.module('app.configurator.dough', [
             dough = $scope.selectableIngredients[0];
             $scope.selectedIngredients.push(dough);
         }
+        
         checkSelectedIngredient(dough);
+        
         $scope.calculatePrice();
 
         $scope.addDough = function (ingredient) {

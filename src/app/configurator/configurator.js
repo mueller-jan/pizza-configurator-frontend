@@ -46,6 +46,8 @@ angular.module('app.configurator', [
         $scope.pizzas = pizzas.data;
         $scope.submitButtonName = "Create Pizza";
         $scope.currentState = 0;
+        $scope.pizza = {};
+        $scope.order = {};
 
         $scope.states = [
             "configurator.start",
@@ -83,7 +85,7 @@ angular.module('app.configurator', [
             $scope.currentState = 0;
             $state.go($scope.states[$scope.currentState])
         };
-        
+
         $scope.loadSuggestion = function (suggestion) {
             //TODO: outsource pizza creation to PizzaFactory
             $scope.submitButtonName = "Create Pizza";
@@ -93,16 +95,10 @@ angular.module('app.configurator', [
 
         $scope.loadPizza = function (pizza) {
             resetState();
+            putDoughToBack();
             $scope.resetIngredients();
-
-            if (pizza.id) {
-                $scope.submitButtonName = "Update Pizza";
-            }
-
             $scope.pizza = pizza;
-
             selectLoadedIngredients(pizza);
-
             $scope.calculatePrice();
         };
 
@@ -113,23 +109,14 @@ angular.module('app.configurator', [
                 $scope.pizza.ingredients.push($scope.selectedIngredients[i].name);
             }
 
-            if (!$scope.pizza.id) {
-                //if pizza has no id, create new pizza
-                CrudService.createPizza($scope.pizza).then(function () {
-                    alert("pizza saved");
-                    CrudService.getPizzasFromUser().then(function (res) {
-                        $scope.pizzas = res.data;
-                    })
-                });
-            } else {
-                //if pizza has id, update pizza
-                CrudService.updatePizza($scope.pizza).then(function () {
-                    alert("pizza updated");
-                    CrudService.getPizzasFromUser().then(function (res) {
-                        $scope.pizzas = res.data;
-                    })
-                });
-            }
+
+            //if pizza has no id, create new pizza
+            CrudService.createPizza($scope.pizza).then(function () {
+                alert("pizza saved");
+                CrudService.getPizzasFromUser().then(function (res) {
+                    $scope.pizzas = res.data;
+                })
+            });
         };
 
         $scope.deletePizza = function (pizzaId) {
@@ -137,10 +124,6 @@ angular.module('app.configurator', [
                 var id = $scope.pizza.id;
             }
 
-            if (id && pizzaId === id) {
-                delete $scope.pizza.id;
-                $scope.submitButtonName = "Create Pizza"
-            }
             CrudService.deletePizza(pizzaId).then(function () {
                 CrudService.getPizzasFromUser().then(function (res) {
                     $scope.pizzas = res.data;
@@ -197,7 +180,7 @@ angular.module('app.configurator', [
                 }
             }
         };
-        
+
 
         $scope.isIngredientInSelectedIngredients = function (ingredient) {
             for (var i = 0; i < $scope.selectedIngredients.length; i++) {
@@ -208,7 +191,7 @@ angular.module('app.configurator', [
             return false;
         };
 
-        $scope.getSelectedIngredientOfCategory = function(category) {
+        $scope.getSelectedIngredientOfCategory = function (category) {
             for (var i = 0; i < $scope.selectedIngredients.length; i++) {
                 if ($scope.selectedIngredients[i].category === category) {
                     return $scope.selectedIngredients[i];
@@ -216,11 +199,11 @@ angular.module('app.configurator', [
             }
         };
 
-        $scope.createOrder = function() {
-            var order = {
-                "pizzaIds": [$scope.pizza.id]
+        $scope.createOrder = function () {
+            $scope.order = {
+                pizzaIds:  [$scope.pizza.id]
             };
-            CrudService.createOrder(order).then(function(res) {
+            CrudService.createOrder($scope.order).then(function (res) {
                 alert("Order created");
             })
         };
@@ -239,6 +222,22 @@ angular.module('app.configurator', [
         function resetState() {
             $scope.currentState = 0;
             $state.go($scope.states[$scope.currentState])
+        }
+
+        function putDoughToBack() {
+            var index = 0;
+            for (var i = 0; i < $scope.selectedIngredients.length; i++) {
+                console.log("FOUND DOUGH")
+                if ($scope.selectedIngredients[i].category === "Dough") {
+                    index = i;
+                    break;
+                }
+            }
+
+            var h;
+            h = $scope.selectedIngredients[index];
+            $scope.selectedIngredients[index] =  $scope.selectedIngredients[0];
+            $scope.selectedIngredients[0] = h;
         }
     })
 ;

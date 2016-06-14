@@ -13,13 +13,32 @@ angular.module('app.profile', [
 
                 }
             },
+            resolve: {
+                userInfo: function (CrudService) {
+                    return CrudService.getUserInfo();
+                },
+                addresses: function(CrudService) {
+                    return CrudService.getAddressesFromUser();
+                }
+            },
             data: {pageTitle: 'Profile'}
         });
     })
 
     .controller('ProfileCtrl',
-        function ProfileController($scope, $rootScope, $state, CrudService) {
-            CrudService.getUserInfo().then(function(res) {
-                $scope.user = res.data;
-            })
+        function ProfileController($scope, $rootScope, $state, CrudService, userInfo, addresses) {
+
+            $scope.user = userInfo.data;
+
+            $scope.addresses = addresses.data;
+
+            $scope.createAddress = function (address) {
+                console.log(address)
+                CrudService.createAddress(address).then(function () {
+                    alert('Address saved');
+                    CrudService.getAddressesFromUser().then(function (res) {
+                        $scope.addresses = res.data;
+                    })
+                })
+            }
         });

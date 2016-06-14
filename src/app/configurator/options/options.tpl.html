@@ -13,6 +13,22 @@
     </select>
 </div>
 
+<h3>Address</h3>
+<div class="form-group">
+    <label for="street">Street:</label>
+    <input ng-model="order.address.street" type="text" class="form-control" id="street">
+
+    <label for="zipcode">Zipcode:</label>
+    <input ng-model="order.address.zipcode" type="text" class="form-control" id="zipcode">
+
+    <label for="housenumber">Housenumber:</label>
+    <input ng-model="order.address.housenumber" type="text" class="form-control" id="housenumber">
+
+    <label for="city">City:</label>
+    <input ng-model="order.address.city" type="text" class="form-control" id="city">
+</div>
+
+
 <div>
     <button type="button" class="btn btn-default btn-sm" ng-click="savePizza()">{{submitButtonName}}</button>
 </div>

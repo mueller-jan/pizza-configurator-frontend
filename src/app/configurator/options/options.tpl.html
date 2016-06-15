@@ -13,34 +13,8 @@
     </select>
 </div>
 
-<h3>Address</h3>
-
-<div ng-repeat="address in addresses" class="form-group">
-    <input ng-model="$parent.selectedAddress" ng-value="address.id" type="radio">
-    <div>Street: {{address.id}}</div>
-    <div>Street: {{address.street}}</div>
-    <div>Zipcode: {{address.zipcode}}</div>
-    <div>Housenumber: {{address.housenumber}}</div>
-    <div>City: {{address.city}}</div>
-    <hr>
-</div>
-
-<div ng-hide="currentUser" class="form-group">
-    <label for="street">Street:</label>
-    <input ng-model="order.address.street" type="text" class="form-control" id="street">
-
-    <label for="zipcode">Zipcode:</label>
-    <input ng-model="order.address.zipcode" type="text" class="form-control" id="zipcode">
-
-    <label for="housenumber">Housenumber:</label>
-    <input ng-model="order.address.housenumber" type="text" class="form-control" id="housenumber">
-
-    <label for="city">City:</label>
-    <input ng-model="order.address.city" type="text" class="form-control" id="city">
-</div>
-
 
 <div>
-    <button type="button" class="btn btn-default btn-sm" ng-click="savePizza()">{{submitButtonName}}</button>
+    <button type="button" class="btn btn-default btn-sm" ng-click="savePizza()">Save Pizza</button>
 </div>
 <br>

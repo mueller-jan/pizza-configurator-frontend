@@ -4,6 +4,7 @@ var app = angular.module('app', [
         'app.register',
         'app.login',
         'app.profile',
+        'app.bills',
         'app.config',
         'services.auth',
         'services.crud',

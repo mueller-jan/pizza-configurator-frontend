@@ -7,6 +7,7 @@ angular.module('app.configurator', [
         'app.configurator.fruit',
         'app.configurator.cheese',
         'app.configurator.options',
+        'app.configurator.order',
         'checklist-model',
         'ui.bootstrap',
         'services.crud'
@@ -42,19 +43,16 @@ angular.module('app.configurator', [
 
     .controller('configuratorCtrl', function ConfiguratorController($scope, $state, ingredients, pizzas, suggestions, addresses, CrudService) {
         $scope.selectedIngredients = [];
+        $scope.selectableIngredients = [];
         $scope.price = 0;
         $scope.ingredients = ingredients.data;
-        $scope.selectableIngredients = [];
         $scope.suggestions = suggestions.data;
         $scope.pizzas = pizzas.data;
-        $scope.submitButtonName = "Create Pizza";
         $scope.currentState = 0;
-        $scope.pizza = {};
-        $scope.order = {};
         $scope.addresses = addresses.data;
 
         $scope.selectedAddress = addresses.data[0].id;
-    
+
 
         $scope.states = [
             "configurator.start",
@@ -63,7 +61,8 @@ angular.module('app.configurator', [
             "configurator.vegetable",
             "configurator.fruit",
             "configurator.cheese",
-            "configurator.options"
+            "configurator.options",
+            "configurator.order"
         ];
 
         $scope.nextState = function (forward) {
@@ -85,7 +84,6 @@ angular.module('app.configurator', [
         }
 
         $scope.newPizza = function () {
-            $scope.submitButtonName = "Create Pizza";
             $scope.pizza = {};
             $scope.resetIngredients();
             $scope.price = 0;
@@ -95,7 +93,6 @@ angular.module('app.configurator', [
 
         $scope.loadSuggestion = function (suggestion) {
             //TODO: outsource pizza creation to PizzaFactory
-            $scope.submitButtonName = "Create Pizza";
             var pizza = {ingredients: suggestion.ingredients, name: suggestion.name, sizeName: suggestion.sizeName};
             $scope.loadPizza(pizza);
         };
@@ -110,6 +107,7 @@ angular.module('app.configurator', [
         };
 
         $scope.savePizza = function () {
+            console.log("SAVE")
             $scope.pizza.ingredients = [];
 
             for (var i = 0; i < $scope.selectedIngredients.length; i++) {
@@ -207,6 +205,7 @@ angular.module('app.configurator', [
         };
 
         $scope.createOrder = function () {
+            console.log($scope.pizza)
             $scope.order = {
                 addressId: $scope.selectedAddress,
                 pizzaIds:  [$scope.pizza.id]
@@ -232,10 +231,13 @@ angular.module('app.configurator', [
             $state.go($scope.states[$scope.currentState])
         }
 
+        /**
+         * Put dough as first element in selectedIngredients,
+         * so that it is at the bottom of the pizza-image
+         */
         function putDoughToBack() {
             var index = 0;
             for (var i = 0; i < $scope.selectedIngredients.length; i++) {
-                console.log("FOUND DOUGH")
                 if ($scope.selectedIngredients[i].category === "Dough") {
                     index = i;
                     break;

@@ -44,6 +44,10 @@ angular.module('services.crud', ['app.config'])
 
             createOrder: function(order) {
                 return $http.post(API_URL + '/user/order', order, {headers: {'Content-Type': 'application/json'}});
+            },
+
+            getBillsFromUser: function() {
+                return $http.get(API_URL + '/user/bills');
             }
         }
     });

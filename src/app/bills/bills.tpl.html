@@ -1,5 +1,12 @@
 <div ng-repeat="bill in bills" class="form-group">
-    <div>Nr: {{bill.nr}}</div>
+    <h4>Bill Nr {{bill.nr}}</h4>
     <div>Total: {{bill.total}}</div>
+
+    <h4>Delivery address</h4>
+    <div>Street: {{bill.address.street}}</div>
+    <div>Zipcode: {{bill.address.zipcode}}</div>
+    <div>Housenumber: {{bill.address.housenumber}}</div>
+    <div>City: {{bill.address.city}}</div>
+
     <hr>
 </div>

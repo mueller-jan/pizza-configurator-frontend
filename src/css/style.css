@@ -8,3 +8,11 @@
     height: auto;
     position: absolute; top: 0; left: 0;
 }
+
+.pizza-base {
+    z-index: -2;
+}
+
+.Dough {
+    z-index: -1;
+}

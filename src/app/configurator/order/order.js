@@ -18,6 +18,18 @@ angular.module('app.configurator.order', [
 
     })
 
-    .controller('orderCtrl', function OrderController($scope) {
-    
+    .controller('orderCtrl', function OrderController($scope, CrudService) {
+        $scope.selectablePizzas = $scope.pizzas.concat($scope.suggestions);
+        $scope.selectedPizzas = [];
+      
+        $scope.createOrder = function () {
+            $scope.order = {
+                addressId: $scope.selectedAddress,
+                pizzaIds:  $scope.selectedPizzas
+            };
+
+            CrudService.createOrder($scope.order).then(function (res) {
+                alert("Order created");
+            })
+        };
     });

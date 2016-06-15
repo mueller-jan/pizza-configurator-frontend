@@ -87,19 +87,12 @@ angular.module('app.configurator', [
             $scope.pizza = {};
             $scope.resetIngredients();
             $scope.price = 0;
-            $scope.currentState = 0;
+            $scope.currentState = 1;
             $state.go($scope.states[$scope.currentState])
-        };
-
-        $scope.loadSuggestion = function (suggestion) {
-            //TODO: outsource pizza creation to PizzaFactory
-            var pizza = {ingredients: suggestion.ingredients, name: suggestion.name, sizeName: suggestion.sizeName};
-            $scope.loadPizza(pizza);
         };
 
         $scope.loadPizza = function (pizza) {
             resetState();
-            putDoughToBack();
             $scope.resetIngredients();
             $scope.pizza = pizza;
             selectLoadedIngredients(pizza);
@@ -107,13 +100,11 @@ angular.module('app.configurator', [
         };
 
         $scope.savePizza = function () {
-            console.log("SAVE")
             $scope.pizza.ingredients = [];
 
             for (var i = 0; i < $scope.selectedIngredients.length; i++) {
                 $scope.pizza.ingredients.push($scope.selectedIngredients[i].name);
             }
-
 
             //if pizza has no id, create new pizza
             CrudService.createPizza($scope.pizza).then(function () {
@@ -137,7 +128,6 @@ angular.module('app.configurator', [
         };
 
         $scope.calculatePrice = function () {
-            console.log($scope.selectedIngredients)
             $scope.price = 0;
             for (var i = 0; i < $scope.selectedIngredients.length; i++) {
                 var ingredientPrice = $scope.selectedIngredients[i].price;
@@ -204,17 +194,6 @@ angular.module('app.configurator', [
             }
         };
 
-        $scope.createOrder = function () {
-            console.log($scope.pizza)
-            $scope.order = {
-                addressId: $scope.selectedAddress,
-                pizzaIds:  [$scope.pizza.id]
-            };
-            CrudService.createOrder($scope.order).then(function (res) {
-                alert("Order created");
-            })
-        };
-
         function selectLoadedIngredients(pizza) {
             for (var i = 0; i < pizza.ingredients.length; i++) {
                 var ingredientName = pizza.ingredients[i];
@@ -231,23 +210,5 @@ angular.module('app.configurator', [
             $state.go($scope.states[$scope.currentState])
         }
 
-        /**
-         * Put dough as first element in selectedIngredients,
-         * so that it is at the bottom of the pizza-image
-         */
-        function putDoughToBack() {
-            var index = 0;
-            for (var i = 0; i < $scope.selectedIngredients.length; i++) {
-                if ($scope.selectedIngredients[i].category === "Dough") {
-                    index = i;
-                    break;
-                }
-            }
-
-            var h;
-            h = $scope.selectedIngredients[index];
-            $scope.selectedIngredients[index] =  $scope.selectedIngredients[0];
-            $scope.selectedIngredients[0] = h;
-        }
     })
 ;

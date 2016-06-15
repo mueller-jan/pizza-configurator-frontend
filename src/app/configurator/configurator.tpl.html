@@ -2,7 +2,7 @@
     <div class="col-md-3">
         <h3>Suggested Pizzas</h3>
         <div ng-repeat="suggestion in suggestions">
-            <a href ng-click="loadSuggestion(suggestion)">
+            <a href ng-click="loadPizza(suggestion)">
                 {{suggestion.name}}
             </a>
         </div>
@@ -21,28 +21,24 @@
 
     <div class="col-md-6">
         <div id="pizza">
-            <img src="assets/pizza-base.png"/>
-            <img ng-repeat="ingredient in selectedIngredients" ng-src="{{ingredient.imagePath}}"/>
+            <img class="pizza-base" src="assets/pizza-base.png"/>
+            <img ng-repeat="ingredient in selectedIngredients" ng-class="ingredient.category" ng-src="{{ingredient.imagePath}}"/>
         </div>
     </div>
 
     <div class="col-md-3">
-        <h3>Pizza Creation</h3>
-
         <div>
             <button type="button" class="btn btn-default btn-sm" ng-hide="currentState === 0"
                     ng-click="nextState(false)">Back
             </button>
-            <button type="button" class="btn btn-default btn-sm" ng-hide="currentState === states.length"
+            <button type="button" class="btn btn-default btn-sm"
+                    ng-hide="currentState === states.length || currentState === 0"
                     ng-click="nextState(true)">Next
             </button>
         </div>
         <div ui-view="steps"></div>
         <br>
         <div ng-hide="currentState === 0">Price: {{price}} €</div>
-
-
-        <button ng-show="pizza" type="button" class="btn btn-default btn-sm" ui-sref="configurator.order">Order</button>
     </div>
 
 

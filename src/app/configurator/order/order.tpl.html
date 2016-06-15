@@ -1,4 +1,6 @@
-<h3>Address</h3>
+<h3>Place your Order</h3>
+
+<h4>Address</h4>
 
 <div ng-show="currentUser" ng-repeat="address in addresses" class="form-group">
     <input ng-model="$parent.selectedAddress" ng-value="address.id" type="radio">
@@ -8,6 +10,15 @@
     <div>Housenumber: {{address.housenumber}}</div>
     <div>City: {{address.city}}</div>
     <hr>
+</div>
+
+<div ng-repeat="pizza in selectablePizzas">
+    <label>
+        <input type="checkbox" checklist-model="selectedPizzas"
+               checklist-value="pizza.id">
+        {{pizza.name}}
+    </label>
+    <br>
 </div>
 
 <div ng-hide="currentUser" class="form-group">
@@ -24,4 +35,4 @@
     <input ng-model="order.address.city" type="text" class="form-control" id="city">
 </div>
 
-<button type="button" class="btn btn-default btn-sm" ng-click="createOrder()">Place Order</button>
+<button type="button" class="btn btn-default btn-sm" ng-click="createOrder()">Send Order</button>

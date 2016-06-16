@@ -19,5 +19,11 @@ angular.module('app.configurator.options', [
     })
 
     .controller('optionsCtrl', function OptionsController($scope) {
-        
+
+        $scope.updateCheckboxes = function() {
+            for (var i = 0; i < $scope.sizes.length; i++) {
+                $scope.sizes[i].checked = $scope.sizes[i] === $scope.selectedSize;
+            }
+        }
+
     });

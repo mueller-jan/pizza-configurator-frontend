@@ -35,13 +35,16 @@ angular.module('app.configurator', [
                 },
                 addresses: function (CrudService) {
                     return CrudService.getAddressesFromUser();
+                },
+                sizes: function(CrudService) {
+                    return CrudService.getSizes();
                 }
             }
         })
 
     })
 
-    .controller('configuratorCtrl', function ConfiguratorController($scope, $state, ingredients, pizzas, suggestions, addresses, CrudService) {
+    .controller('configuratorCtrl', function ConfiguratorController($scope, $state, ingredients, pizzas, suggestions, addresses, sizes, CrudService) {
         $scope.selectedIngredients = [];
         $scope.selectableIngredients = [];
         $scope.price = 0;
@@ -50,6 +53,8 @@ angular.module('app.configurator', [
         $scope.pizzas = pizzas.data;
         $scope.currentState = 0;
         $scope.addresses = addresses.data;
+        $scope.sizes = sizes.data;
+        $scope.selectedSize = sizes.data[0];
 
         if (addresses.data.length > 0 && addresses !== undefined) {
             $scope.selectedAddress = addresses.data[0].id;
@@ -99,14 +104,20 @@ angular.module('app.configurator', [
             $scope.pizza = pizza;
             selectLoadedIngredients(pizza);
             $scope.calculatePrice();
+            $scope.currentState = 1;
+            $state.go($scope.states[$scope.currentState])
         };
 
         $scope.savePizza = function () {
             $scope.pizza.ingredients = [];
 
+            //add ingredients
             for (var i = 0; i < $scope.selectedIngredients.length; i++) {
                 $scope.pizza.ingredients.push($scope.selectedIngredients[i].name);
             }
+
+            //add size
+            $scope.pizza.sizeName = $scope.selectedSize.name;
 
             //if pizza has no id, create new pizza
             CrudService.createPizza($scope.pizza).then(function () {
@@ -130,11 +141,16 @@ angular.module('app.configurator', [
         };
 
         $scope.calculatePrice = function () {
+            console.log("calc")
+            console.log($scope.selectedSize)
+
             $scope.price = 0;
             for (var i = 0; i < $scope.selectedIngredients.length; i++) {
                 var ingredientPrice = $scope.selectedIngredients[i].price;
                 $scope.price += ingredientPrice;
             }
+
+            $scope.price *= $scope.selectedSize.priceFactor;
         };
 
         $scope.randomize = function () {

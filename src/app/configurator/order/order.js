@@ -44,9 +44,7 @@ angular.module('app.configurator.order', [
                 addressId: $scope.selectedAddress,
                 pizzaIds: $scope.selectedPizzas
             };
-
-            console.log($scope.order)
-
+            
             CrudService.createOrder($scope.order).then(function (res) {
                 alert("Order created");
             })

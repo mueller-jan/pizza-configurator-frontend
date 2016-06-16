@@ -4,15 +4,16 @@
 </div>
 
 <div class="form-group">
-    <label for="size">Select size:</label>
-    <select ng-model="pizza.sizeName" class="form-control" id="size">
-        <option>xxl</option>
-        <option>xl</option>
-        <option>l</option>
-        <option>s</option>
-    </select>
+    <h4>Select your size</h4>
+    <div ng-repeat="size in sizes">
+        <label>
+            {{size.name}}
+            <input ng-click="calculatePrice()" ng-model="$parent.$parent.selectedSize"
+                  ng-value="size" type="radio">
+        </label>
+        <br>
+    </div>
 </div>
-
 
 <div>
     <button type="button" class="btn btn-default btn-sm" ng-click="savePizza()">Save Pizza</button>

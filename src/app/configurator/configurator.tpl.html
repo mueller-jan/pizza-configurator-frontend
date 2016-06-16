@@ -38,8 +38,7 @@
         </div>
         <div ui-view="steps"></div>
         <br>
-     
-        <div ng-show="price && (currentState < states.length-1)">Price: {{price}} €</div>
+        <div ng-show="price > 0 && (currentState < states.length-1)">Price: {{price}} €</div>
     </div>
 
 

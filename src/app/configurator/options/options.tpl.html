@@ -10,7 +10,7 @@
     <div ng-repeat="size in sizes">
         <label>
             {{size.name}}
-            <input ng-click="calculatePriceOfPizza(pizza)" ng-model="$parent.$parent.selectedSize"
+            <input ng-click="addSelectedSizeToPizza()" ng-model="$parent.$parent.selectedSize"
                   ng-value="size" type="radio">
         </label>
         <br>

@@ -90,7 +90,7 @@ angular.module('app.configurator', [
         }
 
         $scope.newPizza = function () {
-            $scope.pizza = {ingredients: []};
+            $scope.pizza = {ingredients: [], sizeName: $scope.selectedSize.name};
             $scope.resetIngredients();
             $scope.price = 0;
             $scope.currentState = 1;
@@ -145,6 +145,11 @@ angular.module('app.configurator', [
             $scope.calculatePriceOfPizza($scope.pizza);
         };
 
+        $scope.addSelectedSizeToPizza = function () {
+            $scope.pizza.sizeName = $scope.selectedSize.name;
+            $scope.calculatePriceOfPizza($scope.pizza);
+        };
+
         $scope.calculatePriceOfPizza = function (pizza) {
             $scope.price = 0;
             for (var i = 0; i < pizza.ingredients.length; i++) {
@@ -152,14 +157,12 @@ angular.module('app.configurator', [
                 var ingredient = getIngredientByName(ingredientName);
                 $scope.price += ingredient.price;
             }
-
             var priceFactor;
-            for (i = 0; i <  $scope.sizes.length; i++) {
-                if ( $scope.sizes[i].name === pizza.sizeName) {
-                    priceFactor =  $scope.sizes[i].priceFactor;
+            for (i = 0; i < $scope.sizes.length; i++) {
+                if ($scope.sizes[i].name === pizza.sizeName) {
+                    priceFactor = $scope.sizes[i].priceFactor;
                 }
             }
-
             $scope.price *= priceFactor;
         };
 

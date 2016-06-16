@@ -24,7 +24,6 @@ angular.module('app.bills', [
 
     .controller('BillsCtrl',
         function BillsController($scope, $rootScope, $state, CrudService, bills) {
-            console.log(bills)
             $scope.bills = bills.data;
             
         });

@@ -33,7 +33,6 @@ angular.module('app.profile', [
             $scope.addresses = addresses.data;
 
             $scope.createAddress = function (address) {
-                console.log(address)
                 CrudService.createAddress(address).then(function () {
                     alert('Address saved');
                     CrudService.getAddressesFromUser().then(function (res) {

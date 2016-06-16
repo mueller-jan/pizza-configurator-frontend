@@ -19,7 +19,6 @@ angular.module('app.configurator.dough', [
     })
 
     .controller('doughCtrl', function DoughController($scope) {
-        console.log($scope.selectedIngredients)
         $scope.selectableIngredients = $scope.getIngredientsByCategories("Dough");
         $scope.selectedDough = $scope.selectableIngredients[0];
 
@@ -40,7 +39,6 @@ angular.module('app.configurator.dough', [
             //add dough
             $scope.selectedIngredients.unshift($scope.selectedDough);
             $scope.addSelectedIngredientsToPizza();
-            $scope.calculatePriceOfPizza($scope.pizza);
         };
 
         $scope.addDough();

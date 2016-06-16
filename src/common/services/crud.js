@@ -39,13 +39,11 @@ angular.module('services.crud', ['app.config'])
             },
 
             getPizzasByIds: function(ids) {
-                console.log(ids)
                 //http://localhost:8080/pizza/?ids=1&ids=2
                 var params = "?";
                 for (var i = 0; i < ids.length; i++) {
                     params += "&ids=" + ids[i];
                 }
-                console.log(params)
                 return $http.get(API_URL + '/pizza' + params)
             },
 

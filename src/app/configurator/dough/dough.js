@@ -22,6 +22,15 @@ angular.module('app.configurator.dough', [
         $scope.selectableIngredients = $scope.getIngredientsByCategories("Dough");
         $scope.selectedDough = $scope.selectableIngredients[0];
 
+        for (var i = 0; i < $scope.selectedIngredients.length; i++) {
+            for (var j = 0; j < $scope.selectableIngredients.length; j++) {
+                if ($scope.selectedIngredients[i].name === $scope.selectableIngredients[j].name)  {
+                    $scope.selectedDough = $scope.selectableIngredients[j];
+                }
+            }
+        }
+
+
         $scope.addDough = function () {
             //remove doughs, because there can only be one
             var indices = [];

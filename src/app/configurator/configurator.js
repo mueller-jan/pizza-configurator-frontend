@@ -35,7 +35,6 @@ angular.module('app.configurator', [
                 }
             }
         })
-
     })
 
     .controller('configuratorCtrl', function ConfiguratorController($scope, $state, ingredients, suggestions, sizes, CrudService) {
@@ -111,22 +110,17 @@ angular.module('app.configurator', [
         };
 
         $scope.loadPizza = function (pizza) {
-
             resetState();
             $scope.resetIngredients();
             $scope.pizza = pizza;
             selectLoadedIngredients(pizza);
             selectLoadedSize(pizza);
             $scope.calculatePriceOfPizza(pizza);
-            $scope.currentState = 1;
+            $scope.currentState = 0;
             $state.go($scope.states[$scope.currentState])
         };
 
         $scope.savePizza = function () {
-            //TODO
-            //add size
-            $scope.pizza.sizeName = $scope.selectedSize.name;
-
             if ($scope.currentUser) {
                 CrudService.addPizzaToUser($scope.pizza).then(function () {
                     alert("pizza saved");

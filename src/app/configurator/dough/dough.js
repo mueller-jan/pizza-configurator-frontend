@@ -19,26 +19,11 @@ angular.module('app.configurator.dough', [
     })
 
     .controller('doughCtrl', function DoughController($scope) {
-
+        console.log($scope.selectedIngredients)
         $scope.selectableIngredients = $scope.getIngredientsByCategories("Dough");
+        $scope.selectedDough = $scope.selectableIngredients[0];
 
-        //check selected dough from loaded pizza
-        if ($scope.selectedIngredients.length > 0) {
-            var dough = $scope.getSelectedIngredientOfCategory("Dough");
-        }
-
-        if (!dough) {
-            dough = $scope.selectableIngredients[0];
-            $scope.selectedIngredients.push(dough);
-        }
-        
-        checkSelectedIngredient(dough);
-        
-        $scope.calculatePrice();
-
-        $scope.addDough = function (ingredient) {
-            checkSelectedIngredient(ingredient);
-
+        $scope.addDough = function () {
             //remove doughs, because there can only be one
             var indices = [];
             for (var i = 0; i < $scope.selectedIngredients.length; i++) {
@@ -52,15 +37,12 @@ angular.module('app.configurator.dough', [
                 $scope.selectedIngredients.splice(indices[i], 1);
             }
 
-            //add dough to selected meat
-            $scope.selectedIngredients.unshift($scope.findIngredientByName(ingredient.name));
-
-            $scope.calculatePrice();
+            //add dough
+            $scope.selectedIngredients.unshift($scope.selectedDough);
+            $scope.addSelectedIngredientsToPizza();
+            $scope.calculatePriceOfPizza($scope.pizza);
         };
 
-        function checkSelectedIngredient(ingredient) {
-            for (var i = 0; i < $scope.selectableIngredients.length; i++) {
-                $scope.selectableIngredients[i].checked = $scope.selectableIngredients[i].name === ingredient.name
-            }
-        }
+        $scope.addDough();
+
     });

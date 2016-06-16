@@ -1,7 +1,7 @@
 <h3>Select your Vegetables</h3>
 <div ng-repeat="ingredient in selectableIngredients">
     <label>
-        <input ng-click="calculatePrice()" type="checkbox" checklist-model="selectedIngredients"
+        <input ng-click="addSelectedIngredientsToPizza()" type="checkbox" checklist-model="selectedIngredients"
                checklist-value="ingredient">
         {{ingredient.name}}
     </label>

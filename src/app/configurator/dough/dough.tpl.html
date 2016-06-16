@@ -1,9 +1,22 @@
 <h3>Select your Dough</h3>
-<div ng-repeat="ingredient in selectableIngredients">
-    <label>
-        <input ng-click="addDough(ingredient)" ng-checked="ingredient.checked" type="radio">
+<!--<div ng-repeat="ingredient in selectableIngredients">-->
+    <!--<label>-->
+        <!--<input ng-click="addDough(ingredient)" ng-checked="ingredient.checked" type="radio">-->
 
-        {{ingredient.name}}
-    </label>
-    <br>
+        <!--{{ingredient.name}}-->
+    <!--</label>-->
+    <!--<br>-->
+<!--</div>-->
+
+<div class="form-group">
+    <div ng-repeat="ingredient in selectableIngredients">
+        <label>
+            {{ingredient.name}}
+            <input ng-click="addDough()" ng-model="$parent.selectedDough"
+                   ng-value="ingredient" type="radio">
+        </label>
+        <br>
+    </div>
 </div>
+
+

@@ -1,14 +1,16 @@
+<h3>Options</h3>
+<h4>Name your Pizza</h4>
 <div>
     <label for="pizza-name">Name:</label>
     <input ng-model="pizza.name" class="form-control" id="pizza-name">
 </div>
 
+<h4>Select your Size</h4>
 <div class="form-group">
-    <h4>Select your size</h4>
     <div ng-repeat="size in sizes">
         <label>
             {{size.name}}
-            <input ng-click="calculatePrice()" ng-model="$parent.$parent.selectedSize"
+            <input ng-click="calculatePriceOfPizza(pizza)" ng-model="$parent.$parent.selectedSize"
                   ng-value="size" type="radio">
         </label>
         <br>

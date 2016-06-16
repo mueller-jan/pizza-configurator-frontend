@@ -36,7 +36,7 @@ angular.module('app.configurator', [
                 addresses: function (CrudService) {
                     return CrudService.getAddressesFromUser();
                 },
-                sizes: function(CrudService) {
+                sizes: function (CrudService) {
                     return CrudService.getSizes();
                 }
             }
@@ -52,14 +52,13 @@ angular.module('app.configurator', [
         $scope.suggestions = suggestions.data;
         $scope.pizzas = pizzas.data;
         $scope.currentState = 0;
-        $scope.addresses = addresses.data;
         $scope.sizes = sizes.data;
         $scope.selectedSize = sizes.data[0];
+        $scope.addresses = addresses.data;
 
         if (addresses.data.length > 0 && addresses !== undefined) {
             $scope.selectedAddress = addresses.data[0].id;
         }
-
 
         $scope.states = [
             "configurator.start",
@@ -91,7 +90,7 @@ angular.module('app.configurator', [
         }
 
         $scope.newPizza = function () {
-            $scope.pizza = {};
+            $scope.pizza = {ingredients: []};
             $scope.resetIngredients();
             $scope.price = 0;
             $scope.currentState = 1;
@@ -103,19 +102,12 @@ angular.module('app.configurator', [
             $scope.resetIngredients();
             $scope.pizza = pizza;
             selectLoadedIngredients(pizza);
-            $scope.calculatePrice();
+            $scope.calculatePriceOfPizza(pizza);
             $scope.currentState = 1;
             $state.go($scope.states[$scope.currentState])
         };
 
         $scope.savePizza = function () {
-            $scope.pizza.ingredients = [];
-
-            //add ingredients
-            for (var i = 0; i < $scope.selectedIngredients.length; i++) {
-                $scope.pizza.ingredients.push($scope.selectedIngredients[i].name);
-            }
-
             //add size
             $scope.pizza.sizeName = $scope.selectedSize.name;
 
@@ -140,14 +132,23 @@ angular.module('app.configurator', [
             })
         };
 
-        $scope.calculatePrice = function () {
-            console.log("calc")
-            console.log($scope.selectedSize)
+        $scope.addSelectedIngredientsToPizza = function () {
+            $scope.pizza.ingredients = [];
 
-            $scope.price = 0;
+            //add ingredients
             for (var i = 0; i < $scope.selectedIngredients.length; i++) {
-                var ingredientPrice = $scope.selectedIngredients[i].price;
-                $scope.price += ingredientPrice;
+                $scope.pizza.ingredients.push($scope.selectedIngredients[i].name);
+            }
+
+            $scope.calculatePriceOfPizza($scope.pizza);
+        };
+
+        $scope.calculatePriceOfPizza = function (pizza) {
+            $scope.price = 0;
+            for (var i = 0; i < pizza.ingredients.length; i++) {
+                var ingredientName = pizza.ingredients[i];
+                var ingredient = getIngredientByName(ingredientName);
+                $scope.price += ingredient.price;
             }
 
             $scope.price *= $scope.selectedSize.priceFactor;
@@ -194,32 +195,11 @@ angular.module('app.configurator', [
             }
         };
 
-
-        $scope.isIngredientInSelectedIngredients = function (ingredient) {
-            for (var i = 0; i < $scope.selectedIngredients.length; i++) {
-                if ($scope.selectedIngredients[i].name === ingredient.name) {
-                    return true;
-                }
-            }
-            return false;
-        };
-
-        $scope.getSelectedIngredientOfCategory = function (category) {
-            for (var i = 0; i < $scope.selectedIngredients.length; i++) {
-                if ($scope.selectedIngredients[i].category === category) {
-                    return $scope.selectedIngredients[i];
-                }
-            }
-        };
-
         function selectLoadedIngredients(pizza) {
             for (var i = 0; i < pizza.ingredients.length; i++) {
                 var ingredientName = pizza.ingredients[i];
-                for (var j = 0; j < $scope.ingredients.length; j++) {
-                    if ($scope.ingredients[j].name === ingredientName) {
-                        $scope.selectedIngredients.push($scope.ingredients[j]);
-                    }
-                }
+                var ingredient = getIngredientByName(ingredientName)
+                $scope.selectedIngredients.push(ingredient);
             }
         }
 
@@ -228,5 +208,12 @@ angular.module('app.configurator', [
             $state.go($scope.states[$scope.currentState])
         }
 
+        function getIngredientByName(name) {
+            for (var i = 0; i < $scope.ingredients.length; i++) {
+                if ($scope.ingredients[i].name === name) {
+                    return $scope.ingredients[i];
+                }
+            }
+        }
     })
 ;

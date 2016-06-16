@@ -21,6 +21,13 @@ angular.module('app.configurator.order', [
     .controller('orderCtrl', function OrderController($scope, CrudService) {
         $scope.selectablePizzas = $scope.pizzas.concat($scope.suggestions);
         $scope.selectedPizzas = [];
+        $scope.total = 0;
+        
+        $scope.calculateTotal = function() {
+            for (var i = 0; i < $scope.selectedPizzas.length; i++) {
+                $scope.total += calculatePrice
+            }
+        };
 
         $scope.placeOrder = function () {
             //if no address provided, create address first

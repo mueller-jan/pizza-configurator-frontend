@@ -51,7 +51,9 @@ angular.module('app.configurator', [
         $scope.currentState = 0;
         $scope.addresses = addresses.data;
 
-        $scope.selectedAddress = addresses.data[0].id;
+        if (addresses.data.length > 0 && addresses !== undefined) {
+            $scope.selectedAddress = addresses.data[0].id;
+        }
 
 
         $scope.states = [

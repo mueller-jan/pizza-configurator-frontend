@@ -12,6 +12,21 @@
     <hr>
 </div>
 
+<!--Hide if no address provided-->
+<div ng-hide="selectedAddress" class="form-group">
+    <label for="street">Street:</label>
+    <input ng-model="address.street" type="text" class="form-control" id="street">
+
+    <label for="zipcode">Zipcode:</label>
+    <input ng-model="address.zipcode" type="text" class="form-control" id="zipcode">
+
+    <label for="housenumber">Housenumber:</label>
+    <input ng-model="address.housenumber" type="text" class="form-control" id="housenumber">
+
+    <label for="city">City:</label>
+    <input ng-model="address.city" type="text" class="form-control" id="city">
+</div>
+
 <h4>Select your pizzas</h4>
 <div ng-repeat="pizza in selectablePizzas">
     <label>
@@ -22,18 +37,4 @@
     <br>
 </div>
 
-<div ng-hide="currentUser" class="form-group">
-    <label for="street">Street:</label>
-    <input ng-model="order.address.street" type="text" class="form-control" id="street">
-
-    <label for="zipcode">Zipcode:</label>
-    <input ng-model="order.address.zipcode" type="text" class="form-control" id="zipcode">
-
-    <label for="housenumber">Housenumber:</label>
-    <input ng-model="order.address.housenumber" type="text" class="form-control" id="housenumber">
-
-    <label for="city">City:</label>
-    <input ng-model="order.address.city" type="text" class="form-control" id="city">
-</div>
-
-<button type="button" class="btn btn-default btn-sm" ng-click="createOrder()">Send Order</button>
+<button type="button" class="btn btn-default btn-sm" ng-click="placeOrder()">Send Order</button>

@@ -22,10 +22,12 @@ angular.module('app.configurator.order', [
         $scope.selectablePizzas = $scope.pizzas.concat($scope.suggestions);
         $scope.selectedPizzas = [];
         $scope.total = 0;
-        
-        $scope.calculateTotal = function() {
+
+        $scope.calculateTotal = function () {
+            $scope.total = 0;
             for (var i = 0; i < $scope.selectedPizzas.length; i++) {
-                $scope.total += calculatePrice
+                $scope.calculatePriceOfPizza($scope.selectedPizzas[i]);
+                $scope.total += $scope.price;
             }
         };
 
@@ -49,11 +51,19 @@ angular.module('app.configurator.order', [
         function createOrder() {
             $scope.order = {
                 addressId: $scope.selectedAddress,
-                pizzaIds: $scope.selectedPizzas
+                pizzaIds: getPizzaIds()
             };
-            
+
             CrudService.createOrder($scope.order).then(function (res) {
                 alert("Order created");
             })
+        }
+
+        function getPizzaIds() {
+            var ids = [];
+            for (var i = 0; i < $scope.selectedPizzas.length; i++) {
+                ids.push($scope.selectedPizzas[i].id)
+            }
+            return ids;
         }
     });

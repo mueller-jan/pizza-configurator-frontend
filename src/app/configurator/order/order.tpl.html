@@ -27,14 +27,17 @@
     <input ng-model="address.city" type="text" class="form-control" id="city">
 </div>
 
-<h4>Select your pizzas</h4>
+<h4>Select your Pizzas</h4>
 <div ng-repeat="pizza in selectablePizzas">
     <label>
-        <input type="checkbox" checklist-model="selectedPizzas"
+        <input ng-click="calculateTotal()" type="checkbox" checklist-model="selectedPizzas"
                checklist-value="pizza">
         {{pizza.name}}
     </label>
     <br>
 </div>
+
+<h4>Total</h4>
+{{total}}€
 
 <button type="button" class="btn btn-default btn-sm" ng-click="placeOrder()">Send Order</button>

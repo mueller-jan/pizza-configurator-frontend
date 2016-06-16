@@ -102,6 +102,7 @@ angular.module('app.configurator', [
             $scope.resetIngredients();
             $scope.pizza = pizza;
             selectLoadedIngredients(pizza);
+            selectLoadedSize(pizza);
             $scope.calculatePriceOfPizza(pizza);
             $scope.currentState = 1;
             $state.go($scope.states[$scope.currentState])
@@ -151,7 +152,14 @@ angular.module('app.configurator', [
                 $scope.price += ingredient.price;
             }
 
-            $scope.price *= $scope.selectedSize.priceFactor;
+            var priceFactor;
+            for (i = 0; i <  $scope.sizes.length; i++) {
+                if ( $scope.sizes[i].name === pizza.sizeName) {
+                    priceFactor =  $scope.sizes[i].priceFactor;
+                }
+            }
+
+            $scope.price *= priceFactor;
         };
 
         $scope.randomize = function () {
@@ -200,6 +208,14 @@ angular.module('app.configurator', [
                 var ingredientName = pizza.ingredients[i];
                 var ingredient = getIngredientByName(ingredientName)
                 $scope.selectedIngredients.push(ingredient);
+            }
+        }
+
+        function selectLoadedSize(pizza) {
+            for (var i = 0; i < $scope.sizes.length; i++) {
+                if ($scope.sizes[i].name === pizza.sizeName) {
+                    $scope.selectedSize = $scope.sizes[i];
+                }
             }
         }
 

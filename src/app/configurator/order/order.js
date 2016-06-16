@@ -27,9 +27,6 @@ angular.module('app.configurator.order', [
             if (!$scope.selectedAddress) {
                 CrudService.createAddress($scope.address).then(function (res) {
                     //set id of selected address to returned value
-                    console.log("RES")
-                    console.log(res)
-                    console.log(res.data)
                     $scope.selectedAddress = res.data;
                     if ($scope.selectedAddress) {
                         createOrder();

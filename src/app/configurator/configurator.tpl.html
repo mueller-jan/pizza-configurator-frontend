@@ -38,7 +38,7 @@
         </div>
         <div ui-view="steps"></div>
         <br>
-        <div ng-show="price">Price: {{price}} €</div>
+        <div ng-show="price && (currentState !== states.length)">Price: {{price}} €</div>
     </div>
 
 

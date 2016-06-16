@@ -27,38 +27,51 @@ angular.module('app.configurator', [
                 ingredients: function (CrudService) {
                     return CrudService.getIngredients();
                 },
-                pizzas: function (CrudService) {
-                    return CrudService.getPizzasFromUser()
+                sizes: function (CrudService) {
+                    return CrudService.getSizes();
                 },
                 suggestions: function (CrudService) {
                     return CrudService.getSuggestions();
-                },
-                addresses: function (CrudService) {
-                    return CrudService.getAddressesFromUser();
-                },
-                sizes: function (CrudService) {
-                    return CrudService.getSizes();
                 }
             }
         })
 
     })
 
-    .controller('configuratorCtrl', function ConfiguratorController($scope, $state, ingredients, pizzas, suggestions, addresses, sizes, CrudService) {
+    .controller('configuratorCtrl', function ConfiguratorController($scope, $state, ingredients, suggestions, sizes, CrudService) {
+
+        //load userdata if logged in
+        if ($scope.currentUser) {
+            CrudService.getPizzasFromUser().then(function (res) {
+                $scope.pizzas = res.data;
+            });
+
+            CrudService.getAddressesFromUser().then(function (res) {
+                $scope.addresses = res.data;
+            });
+
+            if (addresses.data.length > 0 && addresses !== undefined) {
+                $scope.selectedAddress = addresses.data[0].id;
+            }
+        } else {
+            //if not logged in get saved pizza ids from localstorage
+            //and retrieve pizzas by ids
+            var ids = getIdsFromLocalStorage();
+            if (ids && ids.length > 0) {
+                CrudService.getPizzasByIds(ids).then(function (res) {
+                    $scope.pizzas = res.data;
+                })
+            }
+        }
+
         $scope.selectedIngredients = [];
         $scope.selectableIngredients = [];
-        $scope.price = 0;
         $scope.ingredients = ingredients.data;
         $scope.suggestions = suggestions.data;
-        $scope.pizzas = pizzas.data;
-        $scope.currentState = 0;
         $scope.sizes = sizes.data;
         $scope.selectedSize = sizes.data[0];
-        $scope.addresses = addresses.data;
-
-        if (addresses.data.length > 0 && addresses !== undefined) {
-            $scope.selectedAddress = addresses.data[0].id;
-        }
+        $scope.price = 0;
+        $scope.currentState = 0;
 
         $scope.states = [
             "configurator.start",
@@ -110,16 +123,31 @@ angular.module('app.configurator', [
         };
 
         $scope.savePizza = function () {
+            //TODO
             //add size
             $scope.pizza.sizeName = $scope.selectedSize.name;
 
-            //if pizza has no id, create new pizza
-            CrudService.createPizza($scope.pizza).then(function () {
-                alert("pizza saved");
-                CrudService.getPizzasFromUser().then(function (res) {
-                    $scope.pizzas = res.data;
-                })
-            });
+            if ($scope.currentUser) {
+                CrudService.addPizzaToUser($scope.pizza).then(function () {
+                    alert("pizza saved");
+                    CrudService.getPizzasFromUser().then(function (res) {
+                        $scope.pizzas = res.data;
+                    })
+                });
+            } else {
+                CrudService.createPizza($scope.pizza).then(function (res) {
+                    var pizzaId = res.data;
+                    var ids = getIdsFromLocalStorage();
+                    if (!ids) {
+                        ids = [];
+                    }
+                    ids.push(pizzaId);
+                    saveIdsToLocalStorage(ids);
+                    CrudService.getPizzasByIds(ids).then(function (res) {
+                        $scope.pizzas = res.data;
+                    })
+                });
+            }
         };
 
         $scope.deletePizza = function (pizzaId) {
@@ -127,11 +155,28 @@ angular.module('app.configurator', [
                 var id = $scope.pizza.id;
             }
 
-            CrudService.deletePizza(pizzaId).then(function () {
-                CrudService.getPizzasFromUser().then(function (res) {
-                    $scope.pizzas = res.data;
+            if ($scope.currentUser) {
+                CrudService.deletePizza(pizzaId).then(function () {
+                    CrudService.getPizzasFromUser().then(function (res) {
+                        $scope.pizzas = res.data;
+                    })
                 })
-            })
+            } else {
+                //delete pizzaId from localstorage
+                var ids = getIdsFromLocalStorage();
+                var index = ids.indexOf(pizzaId);
+                if (index > -1) {
+                    ids.splice(index, 1);
+                }
+                saveIdsToLocalStorage(ids);
+                if (ids.length > 0) {
+                    CrudService.getPizzasByIds(ids).then(function (res) {
+                        $scope.pizzas = res.data;
+                    })
+                } else {
+                    $scope.pizzas = [];
+                }
+            }
         };
 
         $scope.addSelectedIngredientsToPizza = function () {
@@ -210,7 +255,7 @@ angular.module('app.configurator', [
         function selectLoadedIngredients(pizza) {
             for (var i = 0; i < pizza.ingredients.length; i++) {
                 var ingredientName = pizza.ingredients[i];
-                var ingredient = getIngredientByName(ingredientName)
+                var ingredient = getIngredientByName(ingredientName);
                 $scope.selectedIngredients.push(ingredient);
             }
         }
@@ -234,6 +279,14 @@ angular.module('app.configurator', [
                     return $scope.ingredients[i];
                 }
             }
+        }
+
+        function getIdsFromLocalStorage() {
+            return JSON.parse(localStorage.getItem('pizzaIds'));
+        }
+
+        function saveIdsToLocalStorage(ids) {
+            localStorage.setItem('pizzaIds', JSON.stringify(ids));
         }
     })
 ;

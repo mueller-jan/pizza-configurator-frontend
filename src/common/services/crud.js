@@ -18,8 +18,12 @@ angular.module('services.crud', ['app.config'])
                 return $http.get(API_URL + '/user/info');
             },
 
-            createPizza: function (pizza) {
+            addPizzaToUser: function (pizza) {
                 return $http.post(API_URL + '/user/pizza', pizza, {headers: {'Content-Type': 'application/json'}});
+            },
+
+            createPizza: function(pizza) {
+                return $http.post(API_URL + '/pizza', pizza, {headers: {'Content-Type': 'application/json'}});
             },
 
             updatePizza: function(pizza) {
@@ -32,6 +36,17 @@ angular.module('services.crud', ['app.config'])
 
             getPizzasFromUser: function () {
                 return $http.get(API_URL + '/user/pizzas');
+            },
+
+            getPizzasByIds: function(ids) {
+                console.log(ids)
+                //http://localhost:8080/pizza/?ids=1&ids=2
+                var params = "?";
+                for (var i = 0; i < ids.length; i++) {
+                    params += "&ids=" + ids[i];
+                }
+                console.log(params)
+                return $http.get(API_URL + '/pizza' + params)
             },
 
             getSuggestions: function() {

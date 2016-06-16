@@ -98,6 +98,7 @@ angular.module('app.configurator', [
         };
 
         $scope.loadPizza = function (pizza) {
+
             resetState();
             $scope.resetIngredients();
             $scope.pizza = pizza;

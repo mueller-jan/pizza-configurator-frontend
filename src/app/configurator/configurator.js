@@ -130,6 +130,7 @@ angular.module('app.configurator', [
                 });
             } else {
                 CrudService.createPizza($scope.pizza).then(function (res) {
+                    alert("pizza saved");
                     var pizzaId = res.data;
                     var ids = getIdsFromLocalStorage();
                     if (!ids) {

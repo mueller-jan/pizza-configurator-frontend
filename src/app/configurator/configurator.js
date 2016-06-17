@@ -64,6 +64,9 @@ angular.module('app.configurator', [
         createImagePathsFromIngredientNames();
 
         $scope.newPizza = function (gotoNextState) {
+            if (gotoNextState === undefined) {
+                gotoNextState = false;
+            }
             resetState();
             $scope.resetIngredients();
             $scope.pizza = {ingredients: [], sizeName: $scope.selectedSize.name};

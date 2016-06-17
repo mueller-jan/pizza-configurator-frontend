@@ -37,7 +37,6 @@ angular.module('app.configurator.order', [
             } else {
                 createOrderWithoutUser();
             }
-            $state.go('configurator.start')
         };
 
         function createOrderWithoutUser() {
@@ -61,7 +60,6 @@ angular.module('app.configurator.order', [
                     alert("Address created");
                     //set id of selected address to returned value
                     $scope.selectedAddress = res.data;
-
                     if ($scope.selectedAddress) {
                         addOrderToUser();
                     } else {

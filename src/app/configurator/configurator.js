@@ -38,8 +38,7 @@ angular.module('app.configurator', [
     })
 
     .controller('configuratorCtrl', function ConfiguratorController($scope, $state, ingredients, suggestions, sizes, CrudService) {
-
-        //load userdata if logged in
+        //load user-data if logged in
         if ($scope.currentUser) {
             CrudService.getPizzasFromUser().then(function (res) {
                 $scope.pizzas = res.data;
@@ -53,7 +52,7 @@ angular.module('app.configurator', [
                 $scope.selectedAddress = addresses.data[0].id;
             }
         } else {
-            //if not logged in get saved pizza ids from localstorage
+            //if not logged in get saved pizza ids from localStorage
             //and retrieve pizzas by ids
             var ids = getIdsFromLocalStorage();
             if (ids && ids.length > 0) {

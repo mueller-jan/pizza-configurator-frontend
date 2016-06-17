@@ -1,7 +1,6 @@
 angular.module('services.crud', ['app.config'])
     .factory('CrudService', function ($http, API_URL) {
         return {
-
             createUser: function (user) {
                 return $http.post(API_URL + '/user', user, {headers: {'Content-Type': 'application/json'}});
             },
@@ -24,6 +23,10 @@ angular.module('services.crud', ['app.config'])
 
             addPizzaToUser: function (pizza) {
                 return $http.post(API_URL + '/user/pizza', pizza, {headers: {'Content-Type': 'application/json'}});
+            },
+
+            addOrderToUser: function (order) {
+                return $http.post(API_URL + '/user/order', order, {headers: {'Content-Type': 'application/json'}});
             },
 
             createPizza: function (pizza) {
@@ -64,7 +67,7 @@ angular.module('services.crud', ['app.config'])
             },
 
             createOrder: function (order) {
-                return $http.post(API_URL + '/user/order', order, {headers: {'Content-Type': 'application/json'}});
+                return $http.post(API_URL + '/order', order, {headers: {'Content-Type': 'application/json'}});
             },
 
             getBillsFromUser: function () {

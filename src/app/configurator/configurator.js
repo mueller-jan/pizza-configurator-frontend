@@ -44,8 +44,9 @@ angular.module('app.configurator', [
             retrievePizzaIdsFromStorage();
         }
 
-        initScopeVariables();
         initStates();
+        initScopeVariables();
+
 
         //navigation
         $scope.nextState = function (forward) {
@@ -143,7 +144,7 @@ angular.module('app.configurator', [
         $scope.resetIngredients = function () {
             $scope.selectedIngredients.splice(0, $scope.selectedIngredients.length);
         };
-        
+
         $scope.getIngredientsByCategories = function (categories) {
             if (categories.constructor !== Array) {
                 categories = [categories]
@@ -311,7 +312,7 @@ angular.module('app.configurator', [
             //reset state if currentState doesn't match the actual state
             //in case the user reloads a page
             if ($scope.currentState === 0 && $state.current.name !== $scope.states[0]) {
-                $state.go($scope.states(0))
+                $state.go($scope.states[0]);
             }
         }
     })

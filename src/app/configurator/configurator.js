@@ -47,7 +47,6 @@ angular.module('app.configurator', [
         initStates();
         initScopeVariables();
 
-
         //navigation
         $scope.nextState = function (forward) {
             if (forward) {
@@ -65,11 +64,11 @@ angular.module('app.configurator', [
         createImagePathsFromIngredientNames();
 
         $scope.newPizza = function () {
+            resetState();
             $scope.pizza = {ingredients: [], sizeName: $scope.selectedSize.name};
             $scope.resetIngredients();
             $scope.price = 0;
-            $scope.currentState = 1;
-            $state.go($scope.states[$scope.currentState])
+            $scope.nextState(true);
         };
 
         $scope.loadPizza = function (pizza) {
@@ -79,8 +78,7 @@ angular.module('app.configurator', [
             selectLoadedIngredients(pizza);
             selectLoadedSize(pizza);
             $scope.calculatePriceOfPizza(pizza);
-            $scope.currentState = 0;
-            $state.go($scope.states[$scope.currentState])
+            $scope.nextState(true);
         };
 
         $scope.savePizza = function () {

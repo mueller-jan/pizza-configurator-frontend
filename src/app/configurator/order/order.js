@@ -18,7 +18,7 @@ angular.module('app.configurator.order', [
 
     })
 
-    .controller('orderCtrl', function OrderController($scope, CrudService) {
+    .controller('orderCtrl', function OrderController($scope, $state, CrudService) {
         $scope.selectablePizzas = $scope.pizzas.concat($scope.suggestions);
         $scope.selectedPizzas = [];
         $scope.total = 0;
@@ -37,6 +37,7 @@ angular.module('app.configurator.order', [
             } else {
                 createOrder();
             }
+            $state.go('configurator.start')
         };
 
         function createOrderWithoutUser() {
@@ -77,7 +78,7 @@ angular.module('app.configurator.order', [
                 pizzaIds: getPizzaIds()
             };
         }
-        
+
         function getPizzaIds() {
             var ids = [];
             for (var i = 0; i < $scope.selectedPizzas.length; i++) {

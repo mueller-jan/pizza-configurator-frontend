@@ -38,50 +38,16 @@ angular.module('app.configurator', [
     })
 
     .controller('configuratorCtrl', function ConfiguratorController($scope, $state, ingredients, suggestions, sizes, CrudService) {
-        //load user-data if logged in
         if ($scope.currentUser) {
-            CrudService.getPizzasFromUser().then(function (res) {
-                $scope.pizzas = res.data;
-            });
-
-            CrudService.getAddressesFromUser().then(function (res) {
-                $scope.addresses = res.data;
-            });
-
-            if (addresses.data.length > 0 && addresses !== undefined) {
-                $scope.selectedAddress = addresses.data[0].id;
-            }
+            loadUserData();
         } else {
-            //if not logged in get saved pizza ids from localStorage
-            //and retrieve pizzas by ids
-            var ids = getIdsFromLocalStorage();
-            if (ids && ids.length > 0) {
-                CrudService.getPizzasByIds(ids).then(function (res) {
-                    $scope.pizzas = res.data;
-                })
-            }
+            retrievePizzaIdsFromStorage();
         }
 
-        $scope.selectedIngredients = [];
-        $scope.selectableIngredients = [];
-        $scope.ingredients = ingredients.data;
-        $scope.suggestions = suggestions.data;
-        $scope.sizes = sizes.data;
-        $scope.selectedSize = sizes.data[0];
-        $scope.price = 0;
-        $scope.currentState = 0;
+        initScopeVariables();
+        initStates();
 
-        $scope.states = [
-            "configurator.start",
-            "configurator.dough",
-            "configurator.meat",
-            "configurator.vegetable",
-            "configurator.fruit",
-            "configurator.cheese",
-            "configurator.options",
-            "configurator.order"
-        ];
-
+        //navigation
         $scope.nextState = function (forward) {
             if (forward) {
                 if ($scope.currentState < $scope.states.length) {
@@ -95,10 +61,7 @@ angular.module('app.configurator', [
             $state.go($scope.states[$scope.currentState])
         };
 
-        //create imagePath from ingredient-name
-        for (var i = 0; i < $scope.ingredients.length; i++) {
-            $scope.ingredients[i].imagePath = './assets/' + $scope.ingredients[i].name + '.png';
-        }
+        createImagePathsFromIngredientNames();
 
         $scope.newPizza = function () {
             $scope.pizza = {ingredients: [], sizeName: $scope.selectedSize.name};
@@ -121,55 +84,17 @@ angular.module('app.configurator', [
 
         $scope.savePizza = function () {
             if ($scope.currentUser) {
-                CrudService.addPizzaToUser($scope.pizza).then(function () {
-                    alert("pizza saved");
-                    CrudService.getPizzasFromUser().then(function (res) {
-                        $scope.pizzas = res.data;
-                    })
-                });
+                addPizzaToUser();
             } else {
-                CrudService.createPizza($scope.pizza).then(function (res) {
-                    alert("pizza saved");
-                    var pizzaId = res.data;
-                    var ids = getIdsFromLocalStorage();
-                    if (!ids) {
-                        ids = [];
-                    }
-                    ids.push(pizzaId);
-                    saveIdsToLocalStorage(ids);
-                    CrudService.getPizzasByIds(ids).then(function (res) {
-                        $scope.pizzas = res.data;
-                    })
-                });
+                createPizzaWithoutUser();
             }
         };
 
         $scope.deletePizza = function (pizzaId) {
-            if ($scope.pizza && $scope.pizza.id) {
-                var id = $scope.pizza.id;
-            }
-
             if ($scope.currentUser) {
-                CrudService.deletePizza(pizzaId).then(function () {
-                    CrudService.getPizzasFromUser().then(function (res) {
-                        $scope.pizzas = res.data;
-                    })
-                })
+                deletePizzaFromUser(pizzaId);
             } else {
-                //delete pizzaId from localstorage
-                var ids = getIdsFromLocalStorage();
-                var index = ids.indexOf(pizzaId);
-                if (index > -1) {
-                    ids.splice(index, 1);
-                }
-                saveIdsToLocalStorage(ids);
-                if (ids.length > 0) {
-                    CrudService.getPizzasByIds(ids).then(function (res) {
-                        $scope.pizzas = res.data;
-                    })
-                } else {
-                    $scope.pizzas = [];
-                }
+                deletePizzaFromStorage(pizzaId);
             }
         };
 
@@ -218,12 +143,7 @@ angular.module('app.configurator', [
         $scope.resetIngredients = function () {
             $scope.selectedIngredients.splice(0, $scope.selectedIngredients.length);
         };
-
-        /**
-         * Get Ingredients filtered by category
-         * @param categories
-         * @returns {Array}
-         */
+        
         $scope.getIngredientsByCategories = function (categories) {
             if (categories.constructor !== Array) {
                 categories = [categories]
@@ -281,6 +201,118 @@ angular.module('app.configurator', [
 
         function saveIdsToLocalStorage(ids) {
             localStorage.setItem('pizzaIds', JSON.stringify(ids));
+        }
+
+        function createImagePathsFromIngredientNames() {
+            for (var i = 0; i < $scope.ingredients.length; i++) {
+                $scope.ingredients[i].imagePath = './assets/' + $scope.ingredients[i].name + '.png';
+            }
+        }
+
+        function loadUserData() {
+            CrudService.getPizzasFromUser().then(function (res) {
+                $scope.pizzas = res.data;
+            });
+
+            CrudService.getAddressesFromUser().then(function (res) {
+                $scope.addresses = res.data;
+            });
+
+            if ($scope.addresses && $scope.addresses.data.length > 0) {
+                $scope.selectedAddress = addresses.data[0].id;
+            }
+        }
+
+        function addPizzaToUser() {
+            CrudService.addPizzaToUser($scope.pizza).then(function () {
+                alert("pizza saved");
+                CrudService.getPizzasFromUser().then(function (res) {
+                    $scope.pizzas = res.data;
+                })
+            });
+        }
+
+        function createPizzaWithoutUser() {
+            CrudService.createPizza($scope.pizza).then(function (res) {
+                alert("pizza saved");
+                var pizzaId = res.data;
+                var ids = getIdsFromLocalStorage();
+                if (!ids) {
+                    ids = [];
+                }
+                ids.push(pizzaId);
+                saveIdsToLocalStorage(ids);
+                CrudService.getPizzasByIds(ids).then(function (res) {
+                    $scope.pizzas = res.data;
+                })
+            });
+        }
+
+        function deletePizzaFromUser(pizzaId) {
+            CrudService.deletePizza(pizzaId).then(function () {
+                CrudService.getPizzasFromUser().then(function (res) {
+                    $scope.pizzas = res.data;
+                })
+            })
+        }
+
+        function deletePizzaFromStorage(pizzaId) {
+            //delete pizzaId from localstorage
+            var ids = getIdsFromLocalStorage();
+            var index = ids.indexOf(pizzaId);
+            if (index > -1) {
+                ids.splice(index, 1);
+            }
+            saveIdsToLocalStorage(ids);
+            if (ids.length > 0) {
+                CrudService.getPizzasByIds(ids).then(function (res) {
+                    $scope.pizzas = res.data;
+                })
+            } else {
+                $scope.pizzas = [];
+            }
+        }
+
+        function retrievePizzaIdsFromStorage() {
+            //if not logged in get saved pizza ids from localStorage
+            //and retrieve pizzas by ids
+            var ids = getIdsFromLocalStorage();
+            if (ids && ids.length > 0) {
+                CrudService.getPizzasByIds(ids).then(function (res) {
+                    $scope.pizzas = res.data;
+                })
+            }
+        }
+
+        function initScopeVariables() {
+            $scope.selectedIngredients = [];
+            $scope.selectableIngredients = [];
+            $scope.ingredients = ingredients.data;
+            $scope.suggestions = suggestions.data;
+            $scope.sizes = sizes.data;
+            $scope.selectedSize = sizes.data[0];
+            $scope.price = 0;
+        }
+
+        function initStates() {
+            $scope.currentState = 0;
+
+            $scope.states = [
+                "configurator.start",
+                "configurator.dough",
+                "configurator.meat",
+                "configurator.vegetable",
+                "configurator.fruit",
+                "configurator.cheese",
+                "configurator.options",
+                "configurator.order"
+            ];
+
+            //reset state if currentState doesn't match the actual state
+            //in case the user reloads a page
+            if ($scope.currentState === 0 && $state.current.name !== $scope.states[0]) {
+                $state.go($scope.states(0))
+            }
         }
     })
 ;

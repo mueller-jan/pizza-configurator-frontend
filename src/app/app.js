@@ -52,6 +52,7 @@ var app = angular.module('app', [
         });
 
         $scope.$on("$stateChangeStart", function (event, toState, toParams, fromState, fromParams) {
+            $state.current = toState;
             var protectedStates = ['profile'];
             if (protectedStates.indexOf(toState.name) > -1) {
                 if (!AuthService.isAuthenticated() || !AuthService.isAuthorized()) {

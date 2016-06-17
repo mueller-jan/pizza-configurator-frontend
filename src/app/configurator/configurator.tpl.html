@@ -32,7 +32,7 @@
                     ng-click="nextState(false)">Back
             </button>
             <button type="button" class="btn btn-default btn-sm"
-                    ng-hide="currentState === states.length || currentState === 0"
+                    ng-hide="currentState === states.length-1 || currentState === 0"
                     ng-click="nextState(true)">Next
             </button>
         </div>

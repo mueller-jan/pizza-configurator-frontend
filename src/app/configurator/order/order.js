@@ -32,10 +32,10 @@ angular.module('app.configurator.order', [
         };
 
         $scope.placeOrder = function () {
-            if (!$scope.currentUser) {
-                createOrderWithoutUser();
-            } else {
+            if ($scope.currentUser) {
                 createOrder();
+            } else {
+                createOrderWithoutUser();
             }
             $state.go('configurator.start')
         };
@@ -58,17 +58,18 @@ angular.module('app.configurator.order', [
         function createOrder() {
             if (!$scope.selectedAddress) {
                 CrudService.addAddressToUser($scope.address).then(function (res) {
+                    alert("Address created");
                     //set id of selected address to returned value
                     $scope.selectedAddress = res.data;
 
                     if ($scope.selectedAddress) {
-                        CrudService.addOrderToUser(createOrderObject()).then(function (res) {
-                            alert("Order created");
-                        })
+                        addOrderToUser();
                     } else {
                         alert("failed to create order");
                     }
                 })
+            } else {
+                addOrderToUser();
             }
         }
 
@@ -77,6 +78,12 @@ angular.module('app.configurator.order', [
                 addressId: $scope.selectedAddress,
                 pizzaIds: getPizzaIds()
             };
+        }
+
+        function addOrderToUser() {
+            CrudService.addOrderToUser(createOrderObject()).then(function (res) {
+                alert("Order created");
+            })
         }
 
         function getPizzaIds() {

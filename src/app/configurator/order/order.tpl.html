@@ -37,10 +37,6 @@
     <br>
 </div>
 
-<h4>Total</h4>
-<div>
-    {{(total | number:2) + " €"}}
-</div>
-
+<h4>Total: {{(total | number:2) + " €"}}</h4>
 
 <button type="button" class="btn btn-default btn-sm" ng-click="placeOrder()">Send Order</button>

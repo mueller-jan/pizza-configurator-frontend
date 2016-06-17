@@ -58,17 +58,19 @@ angular.module('app.configurator', [
                     $scope.currentState--;
                 }
             }
-            $state.go($scope.states[$scope.currentState])
+            $state.go($scope.states[$scope.currentState]);
         };
 
         createImagePathsFromIngredientNames();
 
-        $scope.newPizza = function () {
+        $scope.newPizza = function (gotoNextState) {
             resetState();
-            $scope.pizza = {ingredients: [], sizeName: $scope.selectedSize.name};
             $scope.resetIngredients();
+            $scope.pizza = {ingredients: [], sizeName: $scope.selectedSize.name};
             $scope.price = 0;
-            $scope.nextState(true);
+            if (gotoNextState) {
+                $scope.nextState(true);
+            }
         };
 
         $scope.loadPizza = function (pizza) {
@@ -130,6 +132,7 @@ angular.module('app.configurator', [
         };
 
         $scope.randomize = function () {
+            $scope.newPizza();
             $scope.resetIngredients();
 
             for (var i = 0; i < $scope.ingredients.length; i++) {
@@ -137,6 +140,12 @@ angular.module('app.configurator', [
                     $scope.selectedIngredients.push($scope.ingredients[i])
                 }
             }
+
+            $scope.addSelectedIngredientsToPizza($scope.pizza);
+            $scope.calculatePriceOfPizza($scope.pizza);
+
+            //goto pizza options
+            setState(6)
         };
 
         $scope.resetIngredients = function () {
@@ -294,8 +303,6 @@ angular.module('app.configurator', [
         }
 
         function initStates() {
-            $scope.currentState = 0;
-
             $scope.states = [
                 "configurator.start",
                 "configurator.dough",
@@ -307,11 +314,12 @@ angular.module('app.configurator', [
                 "configurator.order"
             ];
 
-            //reset state if currentState doesn't match the actual state
-            //in case the user reloads a page
-            if ($scope.currentState === 0 && $state.current.name !== $scope.states[0]) {
-                $state.go($scope.states[0]);
-            }
+            setState(0);
+        }
+
+        function setState(state) {
+            $scope.currentState = state;
+            $state.go($scope.states[state]);
         }
     })
 ;

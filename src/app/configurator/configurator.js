@@ -65,7 +65,7 @@ angular.module('app.configurator', [
 
         $scope.newPizza = function (gotoNextState) {
             if (gotoNextState === undefined) {
-                gotoNextState = false;
+                gotoNextState = true;
             }
             resetState();
             $scope.resetIngredients();

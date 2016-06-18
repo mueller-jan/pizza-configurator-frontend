@@ -44,6 +44,11 @@ angular.module('app.configurator', [
             retrievePizzaIdsFromStorage();
         }
 
+        $scope.setState = function(state) {
+            $scope.currentState = state;
+            $state.go($scope.states[state]);
+        };
+        
         initStates();
         initScopeVariables();
 
@@ -148,7 +153,7 @@ angular.module('app.configurator', [
             $scope.calculatePriceOfPizza($scope.pizza);
 
             //goto pizza options
-            setState(6)
+            $scope.setState(6)
         };
 
         $scope.resetIngredients = function () {
@@ -317,12 +322,7 @@ angular.module('app.configurator', [
                 "configurator.order"
             ];
 
-            setState(0);
-        }
-
-        function setState(state) {
-            $scope.currentState = state;
-            $state.go($scope.states[state]);
+            $scope.setState(0);
         }
     })
 ;

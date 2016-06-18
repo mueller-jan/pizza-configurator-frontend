@@ -27,17 +27,6 @@ angular.module('app.profile', [
 
     .controller('ProfileCtrl',
         function ProfileController($scope, $rootScope, $state, CrudService, userInfo, addresses) {
-
             $scope.user = userInfo.data;
-
             $scope.addresses = addresses.data;
-
-            $scope.createAddress = function (address) {
-                CrudService.addAddressToUser(address).then(function () {
-                    alert('Address saved');
-                    CrudService.getAddressesFromUser().then(function (res) {
-                        $scope.addresses = res.data;
-                    })
-                })
-            }
         });

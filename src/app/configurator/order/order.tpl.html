@@ -14,7 +14,7 @@
         <hr>
     </div>
 
-    <!--Hide if no address provided and user is logged in-->
+    <!--Hide if address provided and user is logged in-->
     <div ng-hide="selectedAddress && currentUser" class="form-group">
         <label for="firstname">First Name:</label>
         <input ng-required='!selectedAddress' ng-model="address.firstname" type="text" class="form-control" id="firstname">

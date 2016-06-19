@@ -37,6 +37,7 @@ angular.module('app.configurator.order', [
             } else {
                 createOrderWithoutUser();
             }
+            $scope.setState(0);
         };
 
         function createOrderWithoutUser() {

@@ -25,6 +25,7 @@ angular.module('app.login', [
                     $scope.setCurrentUser(user);
                     $state.go('configurator')
                 }, function () {
+                    alert('Login failed')
                     $rootScope.$broadcast(AUTH_EVENTS.loginFailed);
                 });
             };

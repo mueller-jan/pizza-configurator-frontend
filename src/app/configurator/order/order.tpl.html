@@ -13,14 +13,13 @@
         <div>City: {{address.city}}</div>
         <hr>
     </div>
-
     <!--Hide if address provided and user is logged in-->
     <div ng-hide="selectedAddress && currentUser" class="form-group">
         <label for="firstname">First Name:</label>
-        <input ng-required='!selectedAddress' ng-model="address.firstname" type="text" class="form-control" id="firstname" value="currentUser.firstName">
+        <input ng-required='!selectedAddress' ng-model="address.firstname" type="text" class="form-control" id="firstname">
 
         <label for="lastname">Last Name:</label>
-        <input ng-required='!selectedAddress' ng-model="address.lastname" type="text" class="form-control" id="lastname" value="currentUser.lastName">
+        <input ng-required='!selectedAddress' ng-model="address.lastname" type="text" class="form-control" id="lastname">
 
         <label for="street">Street:</label>
         <input ng-required='!selectedAddress' ng-model="address.street" type="text" class="form-control" id="street">

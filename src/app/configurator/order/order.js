@@ -23,6 +23,11 @@ angular.module('app.configurator.order', [
         $scope.selectedPizzas = [];
         $scope.total = 0;
 
+        //add first and lastname from logged in user to address
+        $scope.address = {};
+        $scope.address.firstname = $scope.currentUser.firstName;
+        $scope.address.lastname = $scope.currentUser.lastName;
+
         $scope.calculateTotal = function () {
             $scope.total = 0;
             for (var i = 0; i < $scope.selectedPizzas.length; i++) {

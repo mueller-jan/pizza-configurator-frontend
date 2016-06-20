@@ -92,11 +92,16 @@ angular.module('app.configurator', [
         };
 
         $scope.savePizza = function () {
-            if ($scope.currentUser) {
-                addPizzaToUser();
+            if ($scope.pizza.ingredients.length < 2) {
+                alert("Select at least one ingredient!")
             } else {
-                createPizzaWithoutUser();
+                if ($scope.currentUser) {
+                    addPizzaToUser();
+                } else {
+                    createPizzaWithoutUser();
+                }
             }
+
         };
 
         $scope.deletePizza = function (pizzaId) {

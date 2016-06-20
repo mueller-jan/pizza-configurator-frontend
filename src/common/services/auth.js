@@ -14,7 +14,7 @@ angular.module('services.auth', ['app.config'])
                     .post(API_URL + '/auth/login', credentials, {headers: {'Content-Type': 'application/json'}})
                     .then(function (res) {
                         tokenService.save(res.data.tokenMap.token);
-                        userService.create(res.data.username, 'user');
+                        userService.create(res.data.email, res.data.firstName, res.data.lastName, 'user');
                         return userService;
                     })
             };
@@ -24,7 +24,7 @@ angular.module('services.auth', ['app.config'])
                 return $http
                     .get(API_URL + '/auth/authenticate')
                     .then(function (res) {
-                        userService.create(res.data, 'user');
+                        userService.create(res.data.email, res.data.firstName, res.data.lastName, 'user');
                         return userService;
                     })
             };
@@ -52,8 +52,10 @@ angular.module('services.auth', ['app.config'])
         }])
 
     .service('userService', function () {
-        this.create = function (name, role) {
-            this.email = name;
+        this.create = function (email, firstName, lastName, role) {
+            this.email = email;
+            this.firstName = firstName;
+            this.lastName = lastName;
             this.role = role;
         };
         this.destroy = function () {

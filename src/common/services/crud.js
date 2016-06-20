@@ -16,11 +16,7 @@ angular.module('services.crud', ['app.config'])
             getAddressesFromUser: function () {
                 return $http.get(API_URL + '/user/addresses');
             },
-
-            getUserInfo: function () {
-                return $http.get(API_URL + '/user/info');
-            },
-
+            
             addPizzaToUser: function (pizza) {
                 return $http.post(API_URL + '/user/pizza', pizza, {headers: {'Content-Type': 'application/json'}});
             },

@@ -27,6 +27,7 @@
     </div>
 
     <div class="col-md-3">
+        <div ui-view="steps"></div>
         <div>
             <button type="button" class="btn btn-default btn-sm" ng-hide="currentState === 0"
                     ng-click="nextState(false)">Back
@@ -36,7 +37,6 @@
                     ng-click="nextState(true)">Next
             </button>
         </div>
-        <div ui-view="steps"></div>
         <br>
         <div ng-show="price > 0 && (currentState < states.length-1)">Price: {{(price | number:2) + " €"}}</div>
     </div>

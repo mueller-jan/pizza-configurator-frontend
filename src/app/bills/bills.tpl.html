@@ -1,7 +1,7 @@
 <div ng-repeat="bill in bills" class="form-group">
     <h4>Bill Nr {{bill.nr}}</h4>
     <ul>
-        <li>Total: {{bill.total}}</li>
+        <li>Total: {{(bill.total | number:2) + " €"}}</li>
     </ul>
 
     <h4>Pizzas</h4>
@@ -10,6 +10,7 @@
             {{pizza}}
         </li>
     </ul>
+
     <h4>Delivery address</h4>
     <ul>
         <li>First Name: {{bill.address.firstname}}</li>

@@ -38,6 +38,7 @@ angular.module('app.configurator', [
     })
 
     .controller('configuratorCtrl', function ConfiguratorController($scope, $state, ingredients, suggestions, sizes, CrudService) {
+        console.log(suggestions)
         if ($scope.currentUser) {
             loadUserData();
         } else {

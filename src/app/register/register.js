@@ -22,6 +22,8 @@ angular.module('app.register', [
             CrudService.createUser(user).then(function () {
                 alert('Registration successful');
                 $state.go('login');
+            }, function () {
+                alert('Email already exists')
             });
         };
     });

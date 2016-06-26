@@ -25,8 +25,10 @@ angular.module('app.configurator.order', [
 
         //add first and lastname from logged in user to address
         $scope.address = {};
-        $scope.address.firstname = $scope.currentUser.firstName;
-        $scope.address.lastname = $scope.currentUser.lastName;
+        if ($scope.currentUser) {
+            $scope.address.firstname = $scope.currentUser.firstName;
+            $scope.address.lastname = $scope.currentUser.lastName;
+        }
 
         $scope.calculateTotal = function () {
             $scope.total = 0;
